@@ -1,10 +1,16 @@
-import os, sys, inspect, thread, time
-src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
-arch_dir = '../lib/x64' if sys.maxsize > 2**3 else '../lib/x86'
-sys.path.insert(0, os.path.abspath(os.path.join(src_dir, arch_dir)))
+import inspect
+import os
+import sys
 
-import Leap
-from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
+# src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
+# arch_dir = '../lib/x64' if sys.maxsize > 2**3 else '../lib/x86'
+# sys.path.insert(0, os.path.abspath(os.path.join(src_dir, arch_dir)))
+
+sys.path.append('lib')
+sys.path.append('lib/x64')
+sys.path.append('lib/x86')
+from lib import Leap
+
 
 class SampleListener(Leap.Listener):
     
@@ -27,7 +33,7 @@ class SampleListener(Leap.Listener):
             if gesture.type == Leap.Gesture.TYPE_SWIPE:
                 print "SWIPED!"
 def main():
-  #  print "Hello World"
+    #print "Hello World"
     listener = SampleListener()
     controller = Leap.Controller()
     
