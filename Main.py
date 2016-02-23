@@ -9,8 +9,8 @@ import sys
 sys.path.append('lib')
 sys.path.append('lib/x64')
 sys.path.append('lib/x86')
-import Leap
 
+import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 class SampleListener(Leap.Listener):
