@@ -24,15 +24,15 @@ class SampleListener(Leap.Listener):
         controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
         controller.enable_gesture(Leap.Gesture.TYPE_SWIPE);
     
-    def on_frame(self, controller):
-        print "Frame available"
-        
+    def on_frame(self, controller):        
         #Get the most recent frame
         frame = controller.frame()
         
         for gesture in frame.gestures():
             if gesture.type == Leap.Gesture.TYPE_SWIPE:
                 print "SWIPED!"
+            else: 
+                print "Frame available"				
 def main():
     #print "Hello World"
     listener = SampleListener()
