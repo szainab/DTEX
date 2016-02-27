@@ -27,12 +27,25 @@ class SampleListener(Leap.Listener):
     def on_frame(self, controller):        
         #Get the most recent frame
         frame = controller.frame()
-        
+        nextFrame = controller.frame(1)
+        counter = 1
+		
+		
         for gesture in frame.gestures():
             if gesture.type == Leap.Gesture.TYPE_SWIPE:
-                print "SWIPED!"
+                #print "SWIPED!"
+                counter += 1
+				
+                for gesture in nextFrame.gestures():
+                    if gesture.type == Leap.Gesture.TYPE_SWIPE:
+                        counter += 1
+                        break
+                if counter == 2:
+                    print "SWIPED!"
+                else:
+                    break
             else: 
-                print "Frame available"				
+                break					
 def main():
     #print "Hello World"
     listener = SampleListener()

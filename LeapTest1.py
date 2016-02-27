@@ -29,7 +29,6 @@ def main():
 
     # Keep this process running until Enter is pressed
     print "Press Enter to quit..."
-    print "Press Enter to quit..."
 
     try:
         sys.stdin.readline()
