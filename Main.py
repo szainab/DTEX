@@ -13,6 +13,28 @@ sys.path.append('lib/x86')
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
+
+def detectSwipe(frame, prevFrame):
+    counter = 1
+    for gesture in frame.gestures():
+        if gesture.type == Leap.Gesture.TYPE_SWIPE:
+            #print "SWIPED!"
+            counter += 1
+
+            for gesture in prevFrame.gestures():
+                if gesture.type == Leap.Gesture.TYPE_SWIPE:
+                    counter += 1
+                    break
+            if counter == 2:
+                print "SWIPED!"
+            else:
+                break
+        else:
+            break
+
+    return
+
+
 class SampleListener(Leap.Listener):
     
     def on_connect(self, controller):
@@ -28,24 +50,27 @@ class SampleListener(Leap.Listener):
         #Get the most recent frame
         frame = controller.frame()
         prevFrame = controller.frame(1)
-        counter = 1
+
+        detectSwipe(frame,prevFrame)
+
+        # counter = 1
 		
 		
-        for gesture in frame.gestures():
-            if gesture.type == Leap.Gesture.TYPE_SWIPE:
-                #print "SWIPED!"
-                counter += 1
-				
-                for gesture in prevFrame.gestures():
-                    if gesture.type == Leap.Gesture.TYPE_SWIPE:
-                        counter += 1
-                        break
-                if counter == 2:
-                    print "SWIPED!"
-                else:
-                    break
-            else: 
-                break					
+        # for gesture in frame.gestures():
+        #     if gesture.type == Leap.Gesture.TYPE_SWIPE:
+        #         #print "SWIPED!"
+        #         counter += 1
+			#
+        #         for gesture in prevFrame.gestures():
+        #             if gesture.type == Leap.Gesture.TYPE_SWIPE:
+        #                 counter += 1
+        #                 break
+        #         if counter == 2:
+        #             print "SWIPED!"
+        #         else:
+        #             break
+        #     else:
+        #         break
 def main():
     #print "Hello World"
     listener = SampleListener()
