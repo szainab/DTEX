@@ -84,7 +84,7 @@ class SampleListener(Leap.Listener):
             #test 2 (uncomment when the first test is working)
             # for finger in hand.fingers:
             #     should print "is finger extended? True/False"
-            #     print "is " + finger_names[finger.type] + " extended? " + finger. finger.is_extended
+            #     print "is " + finger_names[finger.type] + " extended? " + str(finger.is_extended)
 
 
 
