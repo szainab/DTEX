@@ -58,11 +58,12 @@ def is_l(frame):
     hand = frame.hands[0]
 
     #list of extended fingers
-    ext_fingers = hand.fingers.extended()
+    #ext_fingers = hand.fingers.extended()
+    ext_fingers_types = hand.fingers.extended().type
 
     #Check length of ext_fingers and types. 
     #Unsure of syntax, need to check. 
-    if (len(ext_fingers) == 2 and "TYPE_THUMB" in ext_fingers.type and "TYPE_INDEX" in ext_fingers.type):
+    if (len(ext_fingers) == 2 and "TYPE_THUMB" in ext_fingers_types and "TYPE_INDEX" in ext_fingers_types):
 	thumb = 0
 	index = 1
 	#if the fingers are thumb and index
