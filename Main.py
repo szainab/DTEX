@@ -48,12 +48,47 @@ def is_d(frame):
         x = math.floor(ext_fingers[0].direction.x)
         y = math.floor(ext_fingers[0].direction.y)
         z = math.floor(ext_fingers[0].direction.z)
-        if (hand.is_right):
-            if (abs(x) == 1 and y == 0 and z == 0):
-                return True
-            else: return False
+        if (abs(x) == 1 and y == 0 and z == 0):
+            return True
+        else: return False
     else:
         return False
+
+def is_l(frame):
+    hand = frame.hands[0]
+
+    #list of extended fingers
+    ext_fingers = hand.fingers.extended()
+
+    #Check length of ext_fingers and types. 
+    #Unsure of syntax, need to check. 
+    if (len(ext_fingers) == 2 and "TYPE_THUMB" in ext_fingers.type and "TYPE_INDEX" in ext_fingers.type):
+	thumb = 0
+	index = 1
+	#if the fingers are thumb and index
+	if (ext_fingers[1].type == "TYPE_THUMB"):
+	    thumb = 1
+	    index = 0
+        
+	#Set co-ordinates for thumb and finger
+	x_thumb = math.floor(ext_fingers[thumb].direction.x)
+	y_thumb = math.floor(ext_fingers[thumb].direction.y)
+	z_thumb = math.floor(ext_fingers[thumb].direction.z)
+
+	x_index = math.floor(ext_fingers[index].direction.x)
+	y_index = math.floor(ext_fingers[index].direction.y)
+	z_index = math.floor(ext_fingers[index].direction.z)
+	
+	if(abs(x_thumb) == 1 and y_thumb == 0 and z_thumb == 0
+			and x_index == 0 and abs(y_index) == 1 and z_index == 0):
+	    return True
+        else:
+	    return False
+ 
+
+    else:
+        return False
+
 
 class SampleListener(Leap.Listener):
     
