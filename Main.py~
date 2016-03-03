@@ -72,6 +72,7 @@ class SampleListener(Leap.Listener):
         #     else:
         #         break
 def main():
+    #print "Hello World"
     listener = SampleListener()
     controller = Leap.Controller()
     
@@ -89,3 +90,5 @@ def main():
     
 if __name__ == "__main__":
     main()
+
+#print "Goodbye World"
