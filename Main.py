@@ -49,11 +49,7 @@ def is_d(frame):
         y = math.floor(ext_fingers[0].direction.y)
         z = math.floor(ext_fingers[0].direction.z)
         if (hand.is_right):
-            if (x == -1 and y == 0 and z == 0):
-                return True
-            else: return False
-        elif (hand.is_left):
-            if (x == 1 and y == 0 and z == 0):
+            if (abs(x) == 1 and y == 0 and z == 0):
                 return True
             else: return False
     else:
