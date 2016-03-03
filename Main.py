@@ -1,6 +1,7 @@
 import inspect
 import os
 import sys
+import math
 
 # src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
 # arch_dir = '../lib/x64' if sys.maxsize > 2**3 else '../lib/x86'
@@ -34,6 +35,29 @@ def detectSwipe(frame, prevFrame):
 
     return
 
+def is_d(frame):
+    hand = frame.hands[0]
+
+    #get a list of only the extended fingers
+    ext_fingers = hand.fingers.extended()
+
+    #if there is only one extended finger and it is the index finger
+    if (len(ext_fingers) == 1 and ext_fingers[0].type == "TYPE_INDEX"):
+
+        #get the floored x,y,z vals for finger direction
+        x = math.floor(ext_fingers[0].direction.x)
+        y = math.floor(ext_fingers[0].direction.y)
+        z = math.floor(ext_fingers[0].direction.z)
+        if (hand.is_right):
+            if (x == -1 and y == 0 and z == 0):
+                return True
+            else: return False
+        elif (hand.is_left):
+            if (x == 1 and y == 0 and z == 0):
+                return True
+            else: return False
+    else:
+        return False
 
 class SampleListener(Leap.Listener):
     
@@ -52,7 +76,7 @@ class SampleListener(Leap.Listener):
         prevFrame = controller.frame(1)
 
         detectSwipe(frame,prevFrame)
-
+        print is_d(frame)
         # counter = 1
 		
 		
