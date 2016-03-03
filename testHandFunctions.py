@@ -10,6 +10,8 @@ sys.path.append('lib/x86')
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
+finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
+
 def detectSwipe(frame, prevFrame):
     counter = 1
     for gesture in frame.gestures():
@@ -54,6 +56,7 @@ def is_d(frame):
     else:
         return False
 
+
 class SampleListener(Leap.Listener):
 
     def on_connect(self, controller):
@@ -80,7 +83,8 @@ class SampleListener(Leap.Listener):
 
             #test 2 (uncomment when the first test is working)
             # for finger in hand.fingers:
-            #     print finger.is_extended
+            #     should print "is finger extended? True/False"
+            #     print "is " + finger_names[finger.type] + " extended? " + finger. finger.is_extended
 
 
 
