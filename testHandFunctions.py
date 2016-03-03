@@ -79,7 +79,7 @@ class SampleListener(Leap.Listener):
             #get an array of extended fingers in the hand
             extendedFingers = hand.fingers.extended()
             #print the number of extended fingers in the hand
-            print len(extendedFingers) + "\n"
+            print str(len(extendedFingers)) + "\n"
 
             #test 2 (uncomment when the first test is working)
             # for finger in hand.fingers:
