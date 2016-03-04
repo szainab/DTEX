@@ -1,3 +1,26 @@
+def reset(frame):
+	hand = frame.hands[0]
+
+	#list of extended fingers
+	ext_fingers = hand.fingers.extended()
+	#types of extended fingers
+	ext_fingers_type = [finger.type for finger in ext_fingers]
+
+	if(len(ext_fingers_type) == 5):
+		#put y values for everything into an array
+		y_val = [ int(round(ext_fingers[0].direction.y)), 
+			  int(round(ext_fingers[1].direction.y)), 
+			  int(round(ext_fingers[2].direction.y)),
+			  int(round(ext_fingers[3].direction.y)),
+			  int(round(ext_fingers[4].direction.y))]
+		
+		if all(y == 0 for y in y_val):
+			return True
+		else:
+			return False
+	else:
+		return False
+
 def is_d(frame):
     hand = frame.hands[0]
 
