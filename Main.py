@@ -1,7 +1,7 @@
 import inspect
 import os
 import sys
-import math
+import math 
 
 # src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
 # arch_dir = '../lib/x64' if sys.maxsize > 2**3 else '../lib/x86'
@@ -48,7 +48,7 @@ def is_d(frame):
         x = math.floor(ext_fingers[0].direction.x)
         y = math.floor(ext_fingers[0].direction.y)
         z = math.floor(ext_fingers[0].direction.z)
-        if (abs(x) == 1 and y == 0 and z == 0):
+        if (x == 0 and abs(y) == 1 and z == 0):
             return True
         else: return False
     else:
@@ -72,13 +72,14 @@ def is_l(frame):
 	    index = 0
         
 	#Set co-ordinates for thumb and finger
-	x_thumb = math.floor(ext_fingers[thumb].direction.x)
-	y_thumb = math.floor(ext_fingers[thumb].direction.y)
-	z_thumb = math.floor(ext_fingers[thumb].direction.z)
+	#Floor would just take it down to zero??
+	x_thumb = int(round(ext_fingers[thumb].direction.x))
+	y_thumb = int(round(ext_fingers[thumb].direction.y))
+	z_thumb = int(round(ext_fingers[thumb].direction.z))
 
-	x_index = math.floor(ext_fingers[index].direction.x)
-	y_index = math.floor(ext_fingers[index].direction.y)
-	z_index = math.floor(ext_fingers[index].direction.z)
+	x_index = int(round(ext_fingers[index].direction.x))
+	y_index = int(round(ext_fingers[index].direction.y))
+	z_index = int(round(ext_fingers[index].direction.z))
 	
 	if(abs(x_thumb) == 1 and y_thumb == 0 and z_thumb == 0
 			and x_index == 0 and abs(y_index) == 1 and z_index == 0):
