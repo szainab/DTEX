@@ -86,7 +86,7 @@ def is_w(frame):
 	
 	# if there are three extended fingers and the fingers types are index, middle and ring
 	if (len(ext_fingers) == 3 and ("TYPE_INDEX" in ext_fingers_types) 
-		and ("TYPE_MIDDLE" in ext_fingers_types) and ("TYPE_RING" in ext_fingers_types):
+		and ("TYPE_MIDDLE" in ext_fingers_types) and ("TYPE_RING" in ext_fingers_types)):
 		#floored x,y,z values for first extended finger
 		x1 = math.floor(ext_fingers[0].direction.x)
         	y1 = math.floor(ext_fingers[0].direction.y)
