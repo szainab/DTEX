@@ -36,7 +36,7 @@ def detectSwipe(frame, prevFrame):
 
     return
 
-def detectingLetter(frame, prevFrame):
+def detectLetter(frame):
 	if functions.is_l(frame):
 		print "L"
 	elif functions.is_d(frame):
@@ -47,7 +47,6 @@ def detectingLetter(frame, prevFrame):
 		print "H"
 	else:
 		print "Unidentified Letter"
-	
 
 class SampleListener(Leap.Listener):
     
@@ -69,7 +68,7 @@ class SampleListener(Leap.Listener):
         #print functions.is_h(frame)
 	#print functions.is_l(frame)
 	#print functions.is_d(frame)
-        detectingLetter(frame, prevFrame)
+        detectLetter(frame)
 	# counter = 1
 		
 		
