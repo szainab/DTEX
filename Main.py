@@ -1,9 +1,4 @@
-import inspect
-import os
-import sys
-import math 
-import functions
-import time
+import inspect, os, sys, math, functions, time, __builtin__
 from timeit import default_timer as timer
 
 # src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
@@ -17,14 +12,22 @@ sys.path.append('lib/x86')
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
+#set the debug variable here, it will be global across all imports
+__builtin__.debug = True
 
 def detectSwipe(frame, prevFrame):
     counter = 1
     for gesture in frame.gestures():
         if gesture.type == Leap.Gesture.TYPE_SWIPE:
+			#if the gesture is a swipe, increment the counter
             #print "SWIPED!"
             counter += 1
+			#counter should now be equal to 2
 
+			#seems like this code is competely redundant
+			#if the previous gesture was a swipe, then counter is incremented again to 3
+			#so in that case it wouldn't print
+			#no idea why this code works but it does
             for gesture in prevFrame.gestures():
                 if gesture.type == Leap.Gesture.TYPE_SWIPE:
                     counter += 1
@@ -39,7 +42,7 @@ def detectSwipe(frame, prevFrame):
     return
 
 def detectLetter(frame, letter, start_time):
-	debug = True
+	# debug = True
 	#end_time = timer()
 	#time_taken = end_time - start_time
 	if debug:
@@ -90,7 +93,7 @@ class SampleListener(Leap.Listener):
         controller.enable_gesture(Leap.Gesture.TYPE_SWIPE);
     
     def on_frame(self, controller):
-	debug = True
+	# debug = True
 	#Get the most recent frame
 	start_time = timer()
 	frame = controller.frame()

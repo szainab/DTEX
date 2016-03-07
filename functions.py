@@ -30,7 +30,7 @@ def reset(frame):
 
 def is_d(frame):
 	hand = frame.hands[0]
-	debug = True
+	# debug = True
 	#get a list of only the extended fingers
 	ext_fingers = hand.fingers.extended()
 	if debug == True:
@@ -55,7 +55,7 @@ def is_d(frame):
         	return False
 
 def is_l(frame):
-	debug = True
+	# debug = True
 	hand = frame.hands[0]
 	
 	#list of extended fingers
@@ -97,7 +97,7 @@ def is_l(frame):
         	return False
 
 def is_h(frame):
-	debug = True
+	# debug = True
     	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	#ext_finger_types = [finger.type for finger in ext_fingers]
@@ -129,7 +129,7 @@ def is_h(frame):
 		return False
 
 def is_w(frame):
-    	debug = True
+    	# debug = True
 	hand = frame.hands[0]
 	
 	#get a list of only the extended fingers
