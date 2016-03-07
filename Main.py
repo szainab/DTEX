@@ -3,6 +3,7 @@ import os
 import sys
 import math 
 import functions
+import time
 from timeit import default_timer as timer
 
 # src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
@@ -46,28 +47,28 @@ def detectLetter(frame, letter, start_time):
 		print "Time_taken: " + str(time_taken)
 
 	if functions.is_l(frame):
-		if letter != L or time_taken>2.0:
+		if letter != L or time_taken>7.0:
 			letter = "L"
 			print letter
 			return letter
 		else:
 			return letter
 	elif functions.is_d(frame):
-		if letter != D or time_taken>2.0:
+		if letter != D or time_taken>7.0:
 			letter = "D"
 			print letter
 			return letter
 		else:
 			return letter
 	elif functions.is_w(frame):
-		if letter != W or time_taken>2.0:
+		if letter != W or time_taken>7.0:
 			letter = "W"
 			print letter
 			return letter
 		else:
 			return letter
 	elif functions.is_h(frame):
-		if letter != H or time_taken>2.0:
+		if letter != H or time_taken>7.0:
 			letter = "H"
 			print letter
 			return letter
@@ -100,6 +101,7 @@ class SampleListener(Leap.Listener):
 	if functions.reset(prevFrame):
 		if debug:
 			print "reset triggered"
+		time.sleep(5.0)
 		letter = ""
 		letter = detectLetter(frame, letter, start_time)
 	# counter = 1
