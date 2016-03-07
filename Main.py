@@ -51,28 +51,28 @@ def detectLetter(frame, letter, start_time):
 			print letter
 			return letter
 		else:
-			return
+			return letter
 	elif functions.is_d(frame):
 		if letter != D or time_taken>2.0:
 			letter = "D"
 			print letter
 			return letter
 		else:
-			return 
+			return letter
 	elif functions.is_w(frame):
 		if letter != W or time_taken>2.0:
 			letter = "W"
 			print letter
 			return letter
 		else:
-			return
+			return letter
 	elif functions.is_h(frame):
 		if letter != H or time_taken>2.0:
 			letter = "H"
 			print letter
 			return letter
 		else:
-			return
+			return letter
 	else:
 		print "Unidentified Letter"
 
