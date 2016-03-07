@@ -3,6 +3,7 @@ import os
 import sys
 import math 
 import functions
+from timeit import default_timer as timer
 
 # src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
 # arch_dir = '../lib/x64' if sys.maxsize > 2**3 else '../lib/x86'
@@ -36,15 +37,37 @@ def detectSwipe(frame, prevFrame):
 
     return
 
-def detectLetter(frame):
+def detectLetter(frame, letter, start_time):
+	end_time = timer()
+	time_taken = end_time - start_time
 	if functions.is_l(frame):
-		print "L"
+		if letter != L or time_taken>2.0:
+			letter = "L"
+			print letter
+			return letter
+		else:
+			return
 	elif functions.is_d(frame):
-		print "D"
+		if letter != D or time_taken>2.0:
+			letter = "D"
+			print letter
+			return letter
+		else:
+			return 
 	elif functions.is_w(frame):
-		print "W"
+		if letter != W or time_taken>2.0:
+			letter = "W"
+			print letter
+			return letter
+		else:
+			return
 	elif functions.is_h(frame):
-		print "H"
+		if letter != H or time_taken>2.0:
+			letter = "H"
+			print letter
+			return letter
+		else:
+			return
 	else:
 		print "Unidentified Letter"
 
@@ -61,14 +84,16 @@ class SampleListener(Leap.Listener):
     
     def on_frame(self, controller):        
         #Get the most recent frame
+		start_time = timer()
         frame = controller.frame()
         prevFrame = controller.frame(1)
-
         detectSwipe(frame,prevFrame)
         #print functions.is_h(frame)
 	#print functions.is_l(frame)
 	#print functions.is_d(frame)
-        detectLetter(frame)
+		if functions.reset():
+			letter = ""
+		letter = detectLetter(frame, letter, start_time)
 	# counter = 1
 		
 		
