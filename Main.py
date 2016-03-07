@@ -40,11 +40,12 @@ def detectSwipe(frame, prevFrame):
 
 def detectLetter(frame, letter, start_time):
 	debug = True
-	end_time = timer()
-	time_taken = end_time - start_time
+	#end_time = timer()
+	#time_taken = end_time - start_time
 	if debug:
-		print "End_time: " + str(end_time)
-		print "Time_taken: " + str(time_taken)
+		print "Waiting for letter"
+		#print "End_time: " + str(end_time)
+		#print "Time_taken: " + str(time_taken)
 
 	if functions.is_l(frame):
 		if letter != L or time_taken>7.0:

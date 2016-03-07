@@ -30,7 +30,7 @@ def reset(frame):
 
 def is_d(frame):
 	hand = frame.hands[0]
-	debug = False
+	debug = True
 	#get a list of only the extended fingers
 	ext_fingers = hand.fingers.extended()
 	if debug == True:
@@ -46,14 +46,16 @@ def is_d(frame):
         	x = int(round(ext_fingers[0].direction.x))
         	y = int(round(ext_fingers[0].direction.y))
         	z = int(round(ext_fingers[0].direction.z))
-        	if (x == 0 and abs(y) == 1 and z == 0):
+		if debug:
+			print "D " + str(x) + ", " + str(y) + ", " + str(z)  
+		if (x == 0 and abs(y) == 1 and z == 0):
             		return True
         	else: return False
     	else:
         	return False
 
 def is_l(frame):
-	debug = False
+	debug = True
 	hand = frame.hands[0]
 	
 	#list of extended fingers
@@ -67,8 +69,8 @@ def is_l(frame):
     
 	#Check length of ext_fingers and types. 
     	if len(ext_fingers) == 2 and ext_fingers_types[0] == 0 and ext_fingers_types[1] == 1 :
-		if debug == True:
-			print "Inside the function"
+	    if debug == True:
+	        print "Inside the function"
 			
 		#Set co-ordinates for thumb and finger
 		#Floor would just take it down to zero??
@@ -79,7 +81,7 @@ def is_l(frame):
 		x_index = int(round(ext_fingers[1].direction.x))
 		y_index = int(round(ext_fingers[1].direction.y))
 		z_index = int(round(ext_fingers[1].direction.z))
-	
+		
 		if debug:
 			print "thumb values (x y z) " + str(x_thumb) + ", " + str(y_thumb) + ", " + str(z_thumb)
 			print "index values (x y z) " + str(x_index) + ", " + str(y_index) + ", " + str(z_index)
@@ -95,7 +97,7 @@ def is_l(frame):
         	return False
 
 def is_h(frame):
-	debug = False
+	debug = True
     	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	#ext_finger_types = [finger.type for finger in ext_fingers]
@@ -127,7 +129,8 @@ def is_h(frame):
 		return False
 
 def is_w(frame):
-    	hand = frame.hands[0]
+    	debug = True
+	hand = frame.hands[0]
 	
 	#get a list of only the extended fingers
 	ext_fingers = hand.fingers.extended()
@@ -150,7 +153,12 @@ def is_w(frame):
 		x3 = int(round(ext_fingers[2].direction.x))
        		y3 = int(round(ext_fingers[2].direction.y))
         	z3 = int(round(ext_fingers[2].direction.z))
-		
+
+		if debug == True:
+			print "Thumb values [x,y,z]: " + str(x1) + ", " + str(y1) + ", " + str(z1)
+			print "Index values [x,y,z]: " + str(x2) + ", " + str(y2) + ", " + str(z2)
+			print "Middle values [x,y,z]: " + str(x3) + ", " + str(y3) + ", " + str(z3)
+	
 		#x,y,z coordinates for three extended fingers should be (0,1,0)
 		if(x1 == 0 and y1 == 1 and z1 == 0 and x2 == 0 and y2 == 1 
 			and z2 == 0 and x3 == 0 and y3 == 1 and z3 == 0):
