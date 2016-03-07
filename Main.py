@@ -38,8 +38,13 @@ def detectSwipe(frame, prevFrame):
     return
 
 def detectLetter(frame, letter, start_time):
+	debug = True
 	end_time = timer()
 	time_taken = end_time - start_time
+	if debug:
+		print "End_time: " + str(end_time)
+		print "Time_taken: " + str(time_taken)
+
 	if functions.is_l(frame):
 		if letter != L or time_taken>2.0:
 			letter = "L"
@@ -82,17 +87,20 @@ class SampleListener(Leap.Listener):
         controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
         controller.enable_gesture(Leap.Gesture.TYPE_SWIPE);
     
-    def on_frame(self, controller):        
-        #Get the most recent frame
-		start_time = timer()
-        frame = controller.frame()
-        prevFrame = controller.frame(1)
+    def on_frame(self, controller):
+	debug = True
+	#Get the most recent frame
+	start_time = timer()
+	frame = controller.frame()
+	prevFrame = controller.frame(1)
         detectSwipe(frame,prevFrame)
         #print functions.is_h(frame)
 	#print functions.is_l(frame)
 	#print functions.is_d(frame)
-		if functions.reset():
-			letter = ""
+	if functions.reset(prevFrame):
+		if debug:
+			print "reset triggered"
+		letter = ""
 		letter = detectLetter(frame, letter, start_time)
 	# counter = 1
 		
