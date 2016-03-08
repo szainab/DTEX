@@ -16,117 +16,142 @@ from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 __builtin__.debug = True
 
 def detectSwipe(frame, prevFrame):
-    counter = 1
-    for gesture in frame.gestures():
-        if gesture.type == Leap.Gesture.TYPE_SWIPE:
+	counter = 1
+	for gesture in frame.gestures():
+		if gesture.type == Leap.Gesture.TYPE_SWIPE:
 			#if the gesture is a swipe, increment the counter
             #print "SWIPED!"
-            counter += 1
+ 			counter += 1
 			#counter should now be equal to 2
 
 			#seems like this code is competely redundant
 			#if the previous gesture was a swipe, then counter is incremented again to 3
 			#so in that case it wouldn't print
 			#no idea why this code works but it does
-            for gesture in prevFrame.gestures():
-                if gesture.type == Leap.Gesture.TYPE_SWIPE:
-                    counter += 1
-                    break
-            if counter == 2:
-                print "SWIPED!"
-            else:
-                break
-        else:
-            break
+			for gesture in prevFrame.gestures():
+				if gesture.type == Leap.Gesture.TYPE_SWIPE:
+					counter += 1
+					break
+			if counter == 2:
+				print "SWIPED!"
+			else:
+				break
+		else:
+			break
 
-    return
+	return
 
-def detectLetter(frame, letter, start_time):
-	# debug = True
+def detectLetter(frame):
+	#timing stuff
 	#end_time = timer()
 	#time_taken = end_time - start_time
-	if debug:
-		print "Waiting for letter"
-		#print "End_time: " + str(end_time)
-		#print "Time_taken: " + str(time_taken)
+	#print "End_time: " + str(end_time)
+	#print "Time_taken: " + str(time_taken)
 
+	# if debug: print "Waiting for letter"
+	hand = frame.hands[0]
+	ext_fingers = hand.fingers.extended()
+
+	print "Length of ext_fingers " + str(len(ext_fingers))
+	print "ext_fingers types " + str([finger.type for finger in ext_fingers])
+	for finger in ext_fingers:
+		print "Finger type = " + str(finger.type) + ", direction = " + str(finger.direction.x) + "," + str(finger.direction.y) + "," + str(finger.direction.z)
+
+	new_letter = ''
 	if functions.is_l(frame):
-		if letter != L or time_taken>7.0:
-			letter = "L"
-			print letter
-			return letter
-		else:
-			return letter
+		new_letter = "L"
 	elif functions.is_d(frame):
-		if letter != D or time_taken>7.0:
-			letter = "D"
-			print letter
-			return letter
-		else:
-			return letter
+		new_letter = "D"
 	elif functions.is_w(frame):
-		if letter != W or time_taken>7.0:
-			letter = "W"
-			print letter
-			return letter
-		else:
-			return letter
+		new_letter = "W"
 	elif functions.is_h(frame):
-		if letter != H or time_taken>7.0:
-			letter = "H"
-			print letter
-			return letter
-		else:
-			return letter
-	else:
-		print "Unidentified Letter"
+		new_letter = "H"
+
+	print new_letter
+	return new_letter
+
+
+
+	# if functions.is_l(frame) and letter != 'L': letter = "L"
+	# 	if letter != 'L': # or time_taken>7.0:
+	# 		letter = "L"
+	# elif functions.is_d(frame) and letter != "D": letter = "D"
+	# 	if letter != 'D': # or time_taken>7.0:
+	# 		letter = "D"
+	# elif functions.is_w(frame) and letter != "W": letter = "W"
+	# 	if letter != 'W': # or time_taken>7.0:
+	# 		letter = "W"
+	# elif functions.is_h(frame) and letter != "H": letter = "H"
+	# 	if letter != 'H': # or time_taken>7.0:
+	# 		letter = "H"
+	# else:
+	# 	letter = ''
+	# 	print "Unidentified Letter"
+	# print letter
+	# return letter
 
 class SampleListener(Leap.Listener):
-    
-    def on_connect(self, controller):
-        print "Connected"
-        
-        # Enable gestures
-        controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
-        controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
-        controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
-        controller.enable_gesture(Leap.Gesture.TYPE_SWIPE);
-    
-    def on_frame(self, controller):
-	# debug = True
-	#Get the most recent frame
-	start_time = timer()
-	frame = controller.frame()
-	prevFrame = controller.frame(1)
-        detectSwipe(frame,prevFrame)
-        #print functions.is_h(frame)
-	#print functions.is_l(frame)
-	#print functions.is_d(frame)
-	if functions.reset(prevFrame):
-		if debug:
-			print "reset triggered"
-		time.sleep(5.0)
-		letter = ""
-		letter = detectLetter(frame, letter, start_time)
-	# counter = 1
-		
-		
-       
+
+	letter = ''
+
+	def on_connect(self, controller):
+		print "Connected"
+		controller.enable_gesture(Leap.Gesture.TYPE_SWIPE)
+		# Enable gestures
+        # controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
+        # controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
+        # controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
+
+
+	def on_frame(self, controller):
+		#kind of useless now
+		start_time = timer()
+
+		#do the loop while the letter is the same or if the Leap is reset
+		# while self.letter == new_letter:
+		# 	print "in loop"
+		# 	#get the newest frame
+		frame = controller.frame()
+		# 	print "frame id: " + str(frame.id)
+
+		if functions.reset(frame): new_letter = ''
+		else: new_letter = detectLetter(frame)
+
+		if self.letter != new_letter: print new_letter
+
+		#set the old letter to the new letter
+		self.letter = new_letter
+		#wait for a bit, to "debounce"
+		time.sleep(1)
+
+		#Get the most recent frame
+		# start_time = timer()
+		# frame = controller.frame()
+		# prevFrame = controller.frame(1)
+        #
+		# print "Detecting swipe"
+		# detectSwipe(frame,prevFrame)
+		# #if functions.reset(prevFrame):
+		# if debug: print "reset triggered"
+		# #time.sleep(5.0)
+		# self.letter = detectLetter(frame, self.letter, start_time)
+
+
+
 def main():
-    listener = SampleListener()
-    controller = Leap.Controller()
-    
-    controller.add_listener(listener)
-    
-    #Keep this process running until Enter is pressed
-    print "Press Enter to quit..."
-    try:
-        sys.stdin.readline()
-    except KeyboardInterrupt:
-        pass
-    finally: 
-        #Remove the sample listener when done
-        controller.remove_listener(listener)
+	listener = SampleListener()
+	controller = Leap.Controller()
+	controller.add_listener(listener)
+
+	#Keep this process running until Enter is pressed
+	print "Press Enter to quit..."
+	try:
+		sys.stdin.readline()
+	except KeyboardInterrupt:
+		pass
+	finally:
+		#Remove the sample listener when done
+		controller.remove_listener(listener)
     
 if __name__ == "__main__":
-    main()
+	main()
