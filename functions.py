@@ -4,8 +4,6 @@
 #Type of ring = 3
 #Type of pinky = 4
 
-
-
 def reset(frame):
 	hand = frame.hands[0]
 
@@ -22,37 +20,31 @@ def reset(frame):
 			  int(round(ext_fingers[3].direction.y)),
 			  int(round(ext_fingers[4].direction.y))]
 		if all(y == 0 for y in y_val):
-			return True
-		else:
-			return False
-	else:
-		return False
+			return True 	#only return True in this case, return False by default
+
+	return False
 
 def is_d(frame):
 	hand = frame.hands[0]
-	# debug = True
 	#get a list of only the extended fingers
 	ext_fingers = hand.fingers.extended()
-	if debug == True:
-    		print "length of array = " + str(len(ext_fingers))
-    		print "types in the array = " + str([finger.type for finger in ext_fingers])
+	# if debug:
+	# 	print "length of array = " + str(len(ext_fingers))
+	# 	print "types in the array = " + str([finger.type for finger in ext_fingers])
 		#print "types array" + str(ext_fingers_types)
 
-    	#if there is only one extended finger and it is the index finger
-    	if (len(ext_fingers) == 1 and ext_fingers[0].type == 1):
-        	#get the floored x,y,z vals for finger direction
-			#int ensures no decimal places
-			#round rounds up number to 1 dp 
-        	x = int(round(ext_fingers[0].direction.x))
-        	y = int(round(ext_fingers[0].direction.y))
-        	z = int(round(ext_fingers[0].direction.z))
-		if debug:
-			print "D " + str(x) + ", " + str(y) + ", " + str(z)  
-		if (x == 0 and abs(y) == 1 and z == 0):
-            		return True
-        	else: return False
-    	else:
-        	return False
+	#if there is only one extended finger and it is the index finger
+	if (len(ext_fingers) == 1 and ext_fingers[0].type == 1):
+		#get the floored x,y,z vals for finger direction
+		#int ensures no decimal places
+		#round rounds up number to 1 dp
+		x = int(round(ext_fingers[0].direction.x))
+		y = int(round(ext_fingers[0].direction.y))
+		z = int(round(ext_fingers[0].direction.z))
+		if debug: print "D " + str(x) + ", " + str(y) + ", " + str(z)
+		if (x == 0 and abs(y) == 1 and z == 0): return True
+		else: return False
+	else: return False
 
 def is_l(frame):
 	# debug = True
@@ -62,15 +54,15 @@ def is_l(frame):
 	ext_fingers = hand.fingers.extended()
 	ext_fingers_types = [finger.type for finger in ext_fingers]
 	
-	if debug:
-    		print "length of array = " + str(len(ext_fingers))
-    		print "types in the array = " + str([finger.type for finger in ext_fingers])
-		print "types array" + str(ext_fingers_types)
+	# if debug:
+    	# 	print "length of array = " + str(len(ext_fingers))
+    	# 	print "types in the array = " + str([finger.type for finger in ext_fingers])
+	# 	print "types array" + str(ext_fingers_types)
     
 	#Check length of ext_fingers and types. 
     	if len(ext_fingers) == 2 and ext_fingers_types[0] == 0 and ext_fingers_types[1] == 1 :
-	    if debug == True:
-	        print "Inside the function"
+	    # if debug == True:
+	    #     print "Inside the function"
 			
 		#Set co-ordinates for thumb and finger
 		#Floor would just take it down to zero??
@@ -102,13 +94,13 @@ def is_h(frame):
 	ext_fingers = hand.fingers.extended()
 	#ext_finger_types = [finger.type for finger in ext_fingers]
 	
-	if(debug == True):
-		print "Length of ext_fingers" + str(len(ext_fingers))
-		print "ext_fingers types " + str([finger.type for finger in ext_fingers])
+	# if(debug == True):
+	# 	print "Length of ext_fingers" + str(len(ext_fingers))
+	# 	print "ext_fingers types " + str([finger.type for finger in ext_fingers])
 	
 	if(len(ext_fingers) == 2 and ext_fingers[0].type == 1 and ext_fingers[1].type == 2):
-		if debug == True: 
-			print "Inside the function"
+		# if debug == True:
+		# 	print "Inside the function"
 		x_index = int(round(ext_fingers[0].direction.x))
 		y_index = int(round(ext_fingers[0].direction.y))
 		z_index = int(round(ext_fingers[0].direction.z))
