@@ -124,7 +124,7 @@ class SampleListener(Leap.Listener):
 
 		if self.letter != new_letter:			
 		    print new_letter
-            letterFile.write(new_letter) #writes letter to the file
+                    letterFile.write(new_letter) #writes letter to the file
 		#set the old letter to the new letter
 		self.letter = new_letter
 		#wait for a bit, to "debounce"
