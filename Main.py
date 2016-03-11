@@ -1,6 +1,11 @@
 import inspect, os, sys, math, functions, time, __builtin__
 from timeit import default_timer as timer
 
+#output file
+scriptpath = os.path.dirname(__file__)
+filename = os.path.join(scriptpath, 'testfile.txt')
+letterFile=open(filename, "w")
+
 # src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
 # arch_dir = '../lib/x64' if sys.maxsize > 2**3 else '../lib/x86'
 # sys.path.insert(0, os.path.abspath(os.path.join(src_dir, arch_dir)))
@@ -117,8 +122,9 @@ class SampleListener(Leap.Listener):
 		if functions.reset(frame): new_letter = ''
 		else: new_letter = detectLetter(frame)
 
-		if self.letter != new_letter: print new_letter
-
+		if self.letter != new_letter:			
+		    print new_letter
+                    letterFile.write(new_letter) #writes letter to the file
 		#set the old letter to the new letter
 		self.letter = new_letter
 		#wait for a bit, to "debounce"
