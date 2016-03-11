@@ -123,6 +123,7 @@ class SampleListener(Leap.Listener):
 		self.letter = new_letter
 		#wait for a bit, to "debounce"
 		time.sleep(1)
+		print frame.hands[0].grab_strength
 
 		#Get the most recent frame
 		# start_time = timer()

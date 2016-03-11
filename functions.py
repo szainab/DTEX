@@ -115,7 +115,7 @@ def is_h(frame):
 			print "Middle values [x,y,z]: " + str(x_middle) + ", " + str(y_middle) + ", " + str(z_middle)
 			print hand.palm_normal
 
-		if((abs(x_index) == 1 and y_index == 0 and z_index == 0 and abs(x_middle) == 1 and y_middle == 0 and z_middle == 0) or (x_index == 0 and y_index == 0 and abs(z_index) == 1 and x_middle == 0 and y_middle == 0 and abs(z_middle) == 1 and abs(x_palm) == 1):
+		if((abs(x_index) == 1 and y_index == 0 and z_index == 0 and abs(x_middle) == 1 and y_middle == 0 and z_middle == 0) or (x_index == 0 and y_index == 0 and abs(z_index) == 1 and x_middle == 0 and y_middle == 0 and abs(z_middle) == 1 and abs(x_palm) == 1)):
 			return True
 		else:
 			return False
