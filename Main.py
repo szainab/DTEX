@@ -129,7 +129,13 @@ class SampleListener(Leap.Listener):
 		self.letter = new_letter
 		#wait for a bit, to "debounce"
 		time.sleep(1)
-		print frame.hands[0].grab_strength
+		# print frame.hands[0].grab_strength
+
+		ext_fingers = frame.hands[0].fingers.extended()
+		print "thumb direction = " + str(ext_fingers[0].bone(3).direction.x)
+
+		# ext_fingers = frame.hands[0].fingers.extended()
+		# print "rightmost" + str(ext_fingers.rightmost.type)
 
 		#Get the most recent frame
 		# start_time = timer()

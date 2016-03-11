@@ -66,9 +66,12 @@ def is_l(frame):
 
 		#Set co-ordinates for thumb and finger
 		#For the thumb, get the direction for distal bones
-		x_thumb = int(round(ext_fingers[0].bone[3].direction.x))
-		y_thumb = int(round(ext_fingers[0].bone[3].direction.y))
-		z_thumb = int(round(ext_fingers[0].bon3[3].direction.z))
+		x_thumb = int(round(ext_fingers[0].bone(3).direction.x))
+		y_thumb = int(round(ext_fingers[0].bone(3).direction.y))
+		z_thumb = int(round(ext_fingers[0].bone(3).direction.z))
+		# x_thumb = int(round(ext_fingers[0].direction.x))
+		# y_thumb = int(round(ext_fingers[0].direction.y))
+		# z_thumb = int(round(ext_fingers[0].direction.z))
 
 		x_index = int(round(ext_fingers[1].direction.x))
 		y_index = int(round(ext_fingers[1].direction.y))
