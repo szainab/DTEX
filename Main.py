@@ -17,7 +17,7 @@ sys.path.append('lib/x86')
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
-#set the debug variable here, it will be global across all imports
+#set the debug variable here, it will be global across all import
 __builtin__.debug = True
 
 def detectSwipe(frame, prevFrame):
@@ -71,7 +71,12 @@ def detectLetter(frame):
 		new_letter = "W"
 	elif functions.is_h(frame):
 		new_letter = "H"
-
+	#elif functions.is_b(frame):
+	#	new_letter = "B"
+	elif functions.is_g(frame):
+		new_letter = "G"
+	elif functions.is_r_1(frame) or functions.is_r_2(frame):
+		new_letter = "R"
 	print new_letter
 	return new_letter
 
