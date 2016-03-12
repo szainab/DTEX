@@ -44,9 +44,9 @@ def is_b(frame):
 	hand = frame.hands[0]
 	#list of extended fingers:
 	ext_fingers = hand.fingers.extended()
-
+	
 	#If there are four extended fingers and thumb is not one of them
-	if(len(ext_fingers) == 4 and ext_fingers[0] != 0):
+	if (len(ext_fingers) == 4 and ext_fingers[0].type != 0):
 		#rounded co-ordinates for all fingers, stored in respective arrays
 		x = [int(round(ext_fingers[0].direction.x)), int(round(ext_fingers[1].direction.x)), int(round(ext_fingers[2].direction.x)), int(round(ext_fingers[3].direction.x))]
 		y = [abs(int(round(ext_fingers[0].direction.y))), abs(int(round(ext_fingers[1].direction.y))), abs(int(round(ext_fingers[2].direction.y))), abs(int(round(ext_fingers[3].direction.y)))]

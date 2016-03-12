@@ -71,8 +71,8 @@ def detectLetter(frame):
 		new_letter = "W"
 	elif functions.is_h(frame):
 		new_letter = "H"
-	#elif functions.is_b(frame):
-	#	new_letter = "B"
+	elif functions.is_b(frame):
+		new_letter = "B"
 	elif functions.is_g(frame):
 		new_letter = "G"
 	elif functions.is_r_1(frame) or functions.is_r_2(frame):
