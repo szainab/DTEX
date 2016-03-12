@@ -40,6 +40,19 @@ def reset(frame):
 
 	return False
 
+def is_a(frame):
+	hand = frame.hands[0]
+	ext_fingers = hand.fingers.extended()
+
+	if (len(ext_fingers) == 1 and ext_fingers[0].type == 0):
+		x = int(round(ext_fingers[0].direction.x))
+		y = int(round(ext_fingers[0].direction.y))
+		z = int(round(ext_fingers[0].direction.z))
+
+		if (x == 0 and y == 1 and z == 0):
+			return True
+	return False
+
 def is_b(frame):
 	hand = frame.hands[0]
 	#list of extended fingers:
@@ -296,5 +309,4 @@ def is_r_2(frame):
 					return False		
 		else:
 			return False
-
 
