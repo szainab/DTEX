@@ -109,6 +109,14 @@ def detectLetter(frame,prevFrame):
 	if new_letter != '':
 		print new_letter
 		return new_letter 
+#	elif functions.is_g(frame):
+#		new_letter = "G"
+#	elif functions.is_r(frame):
+#		new_letter = "R"
+#	elif functions.is_a(frame):
+#		new_letter = "A"
+#	print new_letter
+#	return new_letter
 
 
 
@@ -187,6 +195,13 @@ class SampleListener(Leap.Listener):
         
 		# print "Detecting swipe"
 		#detectSwipe(frame,prevFrame)
+
+		# start_time = timer()
+		#frame = controller.frame()
+		#prevFrame = controller.frame(1)
+        	# print "Detecting swipe"
+		#detectSwipe(frame,prevFrame)
+
 		# #if functions.reset(prevFrame):
 		# if debug: print "reset triggered"
 		# #time.sleep(5.0)
