@@ -18,21 +18,13 @@ import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 #set the debug variable here, it will be global across all import
-__builtin__.debug = True
+__builtin__.debug = False
 
 def detectSwipe(frame, prevFrame):
 	counter = 1
 	for gesture in frame.gestures():
 		if gesture.type == Leap.Gesture.TYPE_SWIPE:
-			#if the gesture is a swipe, increment the counter
-            #print "SWIPED!"
  			counter += 1
-			#counter should now be equal to 2
-
-			#seems like this code is competely redundant
-			#if the previous gesture was a swipe, then counter is incremented again to 3
-			#so in that case it wouldn't print
-			#no idea why this code works but it does
 			for gesture in prevFrame.gestures():
 				if gesture.type == Leap.Gesture.TYPE_SWIPE:
 					counter += 1
@@ -46,7 +38,25 @@ def detectSwipe(frame, prevFrame):
 
 	return
 
-def detectLetter(frame):
+def detectCircle(frame, prevFrame):
+	counter = 1
+	for gesture in frame.gestures():
+		if gesture.type == Leap.Gesture.TYPE_CIRCLE:
+			counter += 1
+			for gesture in prevFrame.gestures():
+				if gesture.type == Leap.Gesture.TYPE_CIRCLE:
+					counter += 1
+					break
+			if counter == 2:
+				print "BACKSPACE!"
+			else:
+				break
+		else:
+			break
+	return
+
+
+def detectLetter(frame,prevFrame):
 	#timing stuff
 	#end_time = timer()
 	#time_taken = end_time - start_time
@@ -54,31 +64,51 @@ def detectLetter(frame):
 	#print "Time_taken: " + str(time_taken)
 
 	# if debug: print "Waiting for letter"
-	hand = frame.hands[0]
-	ext_fingers = hand.fingers.extended()
+	#hand = frame.hands[0]
+	#ext_fingers = hand.fingers.extended()
+	
+	
+	'''
 
 	print "Length of ext_fingers " + str(len(ext_fingers))
 	print "ext_fingers types " + str([finger.type for finger in ext_fingers])
 	for finger in ext_fingers:
 		print "Finger type = " + str(finger.type) + ", direction = " + str(finger.direction.x) + "," + str(finger.direction.y) + "," + str(finger.direction.z)
+		
+
+	(inzi)
+		
+	'''
 
 	new_letter = ''
+
 	if functions.is_l(frame):
 		new_letter = "L"
+		if functions.is_l(prevFrame):
+			return new_letter			
 	elif functions.is_d(frame):
 		new_letter = "D"
+		if functions.is_d(prevFrame):
+			return new_letter
 	elif functions.is_w(frame):
 		new_letter = "W"
+		if functions.is_w(prevFrame):
+			return new_letter
 	elif functions.is_h(frame):
 		new_letter = "H"
+		if functions.is_h(prevFrame):
+			return new_letter
 	elif functions.is_b(frame):
 		new_letter = "B"
-	elif functions.is_g(frame):
-		new_letter = "G"
-	elif functions.is_r_1(frame) or functions.is_r_2(frame):
+		if functions.is_b(prevFrame):
+			return new_letter		
+	elif functions.is_r(frame):
 		new_letter = "R"
-	print new_letter
-	return new_letter
+		if functions.is_r(prevFrame):
+			return new_letter
+	if new_letter != '':
+		print new_letter
+		return new_letter 
 
 
 
@@ -102,58 +132,73 @@ def detectLetter(frame):
 
 class SampleListener(Leap.Listener):
 
-	letter = ''
 
 	def on_connect(self, controller):
 		print "Connected"
+		#Enable Gestures
 		controller.enable_gesture(Leap.Gesture.TYPE_SWIPE)
-		# Enable gestures
-        # controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
-        # controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
-        # controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
+		controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
+        	# controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
+        	# controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
 
 
 	def on_frame(self, controller):
+		
+
 		#kind of useless now
-		start_time = timer()
+		#start_time = timer()
 
 		#do the loop while the letter is the same or if the Leap is reset
 		# while self.letter == new_letter:
 		# 	print "in loop"
 		# 	#get the newest frame
-		frame = controller.frame()
+		#frame = controller.frame()
 		# 	print "frame id: " + str(frame.id)
 
-		if functions.reset(frame): new_letter = ''
-		else: new_letter = detectLetter(frame)
+		#if functions.reset(frame): new_letter = ''
+		#else: new_letter = detectLetter(frame)
 
-		if self.letter != new_letter:			
-		    print new_letter
-                    letterFile.write(new_letter) #writes letter to the file
+
+		#if self.letter != new_letter:			
+		#    print new_letter
+                #    letterFile.write(new_letter) #writes letter to the file
 		#set the old letter to the new letter
-		self.letter = new_letter
+		#self.letter = new_letter
 		#wait for a bit, to "debounce"
-		time.sleep(1)
+		
+		#time.sleep(1)    (inzi)
+		
 		# print frame.hands[0].grab_strength
 
-		ext_fingers = frame.hands[0].fingers.extended()
-		print "thumb direction = " + str(ext_fingers[0].bone(3).direction.x)
+		#ext_fingers = frame.hands[0].fingers.extended() (inzi)
+		#print "thumb direction = " + str(ext_fingers[0].bone(3).direction.x) (inzi)
+
+
 
 		# ext_fingers = frame.hands[0].fingers.extended()
 		# print "rightmost" + str(ext_fingers.rightmost.type)
 
 		#Get the most recent frame
-		# start_time = timer()
-		# frame = controller.frame()
-		# prevFrame = controller.frame(1)
-        #
+		#start_time = timer() (inzi - and this line has nothing to do with recent frame) 
+
+
+		#frame = controller.frame()
+		#prevFrame = controller.frame(1)
+        
 		# print "Detecting swipe"
-		# detectSwipe(frame,prevFrame)
+		#detectSwipe(frame,prevFrame)
 		# #if functions.reset(prevFrame):
 		# if debug: print "reset triggered"
 		# #time.sleep(5.0)
 		# self.letter = detectLetter(frame, self.letter, start_time)
 
+		#inzi code
+		
+		frame = controller.frame()
+		prevFrame = controller.frame(1)
+		detectSwipe(frame,prevFrame)
+		detectCircle(frame,prevFrame)
+		detectLetter(frame,prevFrame)
 
 
 def main():
