@@ -17,7 +17,7 @@ sys.path.append('lib/x86')
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
-#set the debug variable here, it will be global across all import
+#set the debug variable here, it will be global across all imports
 __builtin__.debug = True
 
 def detectSwipe(frame, prevFrame):
@@ -71,14 +71,7 @@ def detectLetter(frame):
 		new_letter = "W"
 	elif functions.is_h(frame):
 		new_letter = "H"
-	elif functions.is_b(frame):
-		new_letter = "B"
-	elif functions.is_g(frame):
-		new_letter = "G"
-	elif functions.is_r(frame):
-		new_letter = "R"
-	elif functions.is_a(frame):
-		new_letter = "A"
+
 	print new_letter
 	return new_letter
 
@@ -131,26 +124,19 @@ class SampleListener(Leap.Listener):
 
 		if self.letter != new_letter:			
 		    print new_letter
-                    letterFile.write(new_letter) #writes letter to the file
+            letterFile.write(new_letter) #writes letter to the file
 		#set the old letter to the new letter
 		self.letter = new_letter
 		#wait for a bit, to "debounce"
 		time.sleep(1)
-		# print frame.hands[0].grab_strength
-
-		ext_fingers = frame.hands[0].fingers.extended()
-		print "thumb direction = " + str(ext_fingers[0].bone(3).direction.x)
-
-		# ext_fingers = frame.hands[0].fingers.extended()
-		# print "rightmost" + str(ext_fingers.rightmost.type)
 
 		#Get the most recent frame
 		# start_time = timer()
-		frame = controller.frame()
-		prevFrame = controller.frame(1)
+		# frame = controller.frame()
+		# prevFrame = controller.frame(1)
         #
 		# print "Detecting swipe"
-		detectSwipe(frame,prevFrame)
+		# detectSwipe(frame,prevFrame)
 		# #if functions.reset(prevFrame):
 		# if debug: print "reset triggered"
 		# #time.sleep(5.0)
