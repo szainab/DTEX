@@ -38,6 +38,7 @@ def detectSwipe(frame, prevFrame):
 
 	return
 
+
 def detectCircle(frame, prevFrame):
 	counter = 1
 	for gesture in frame.gestures():
@@ -49,6 +50,24 @@ def detectCircle(frame, prevFrame):
 					break
 			if counter == 2:
 				print "BACKSPACE!"
+			else:
+				break
+		else:
+			break
+	return
+
+
+def detectTap(frame, prevFrame):
+	counter = 1
+	for gesture in frame.gestures():
+		if gesture.type == Leap.Gesture.TYPE_KEY_TAP:
+			counter += 1
+			for gesture in prevFrame.gesture():
+				if gesture.type == Leap.Gesture.TYPE_KEY_TAP:
+					counter += 1
+					break
+			if counter == 2:
+				print "ESPEAK!"
 			else:
 				break
 		else:
@@ -152,7 +171,7 @@ class SampleListener(Leap.Listener):
 		#Enable Gestures
 		controller.enable_gesture(Leap.Gesture.TYPE_SWIPE)
 		controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
-        	# controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
+        	controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
         	# controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
 
 
