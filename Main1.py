@@ -14,11 +14,13 @@ sys.path.append('lib')
 sys.path.append('lib/x64')
 sys.path.append('lib/x86')
 
+
 import Leap
 from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 #set the debug variable here, it will be global across all import
 __builtin__.debug = False
+__builtin__.counter = 0
 
 def detectSwipe(frame, prevFrame):
 	counter = 1
@@ -56,7 +58,7 @@ def detectCircle(frame, prevFrame):
 	return
 
 
-def detectLetter(frame,prevFrame):
+def detectLetter(frame,prevFrame,num):
 	#timing stuff
 	#end_time = timer()
 	#time_taken = end_time - start_time
@@ -85,11 +87,13 @@ def detectLetter(frame,prevFrame):
 	if functions.is_l(frame):
 		new_letter = "L"
 		if functions.is_l(prevFrame):
-			return new_letter			
+			num += 1
+			return num			
 	elif functions.is_d(frame):
 		new_letter = "D"
 		if functions.is_d(prevFrame):
-			return new_letter
+			num += 1
+			return num
 	elif functions.is_w(frame):
 		new_letter = "W"
 		if functions.is_w(prevFrame):
@@ -156,7 +160,7 @@ class SampleListener(Leap.Listener):
         	# controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
 
 
-	def on_frame(self, controller):
+	def on_frame(self, controller, counter):
 		
 
 		#kind of useless now
@@ -219,7 +223,16 @@ class SampleListener(Leap.Listener):
 		prevFrame = controller.frame(1)
 		detectSwipe(frame,prevFrame)
 		detectCircle(frame,prevFrame)
-		detectLetter(frame,prevFrame)
+
+		num = 0
+
+		if functions.reset(frame):
+			counter = 0
+			on_frame(self, controller, counter)
+		if counter == 0:
+			num = detectLetter(frame,prevFrame, num)
+			counter = num
+			on_frame(self, controller, counter)
 
 
 def main():
