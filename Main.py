@@ -167,6 +167,14 @@ def detectLetter(frame,prevFrame):
 		new_letter = "A"
 		if functions.is_a(prevFrame):
 			return new_letter
+	elif functions.is_e(frame):
+		new_letter = "E"
+		if functions.is_e(prevFrame):
+			return new_letter
+	elif functions.is_o(frame):
+		new_letter = "O"
+		if functions.is_o(prevFrame):
+			return new_letter
 		
 	if new_letter != '':
 		print new_letter
