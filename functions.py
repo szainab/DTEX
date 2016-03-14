@@ -269,3 +269,27 @@ def is_r(frame):
 		else:
 			return False
 
+def is_e(frame):
+	hand = frame.hands[0]
+	ext_fingers = hand.fingers.extended()
+	# get the x direction of normal vector to the palm
+	x_palm = int(round(hand.palm_normal.x))
+
+	#none of the fingers should be extended and x direction of normal vector should be 0.
+	if(len(ext_fingers) == 0 and x_palm == 0):
+		return True 
+	else:
+		return False
+
+
+def is_o(frame):
+	hand = frame.hands[0]
+	ext_fingers = hand.fingers.extended()
+	# get the x direction of normal vector to the palm
+	x_palm = int(round(hand.palm_normal.x))
+
+	#none of the fingers should be extended and x direction of normal vector should be either 1 or -1.
+	if(len(ext_fingers) == 0 and abs(x_palm) == 1):
+		return True 
+	else:
+		return False
