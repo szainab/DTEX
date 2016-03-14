@@ -103,9 +103,8 @@ def detectGesture(frame, prevFrame, gestType):
 				elif gestType == "Tap":
 					print "ESPEAK!"
 					#Join words together to form a string with
-					#empty string in between, store in wordsS
-					wordsS = ''.join(words)
-					subprocess.call("espeak %s" % wordsS)
+					#empty string in between then espeak it
+					subprocess.call("espeak %s" % ''.join(words))
 			else:
 				break
 		else:
