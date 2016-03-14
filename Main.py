@@ -19,6 +19,7 @@ from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 
 #set the debug variable here, it will be global across all import
 __builtin__.debug = False
+__builtin__.words = []
 
 '''
 def detectSwipe(frame, prevFrame):
@@ -93,12 +94,15 @@ def detectGesture(frame, prevFrame, gestType):
 					counter += 1
 					break
 			if counter == 2:
-				if gestType == "Swipe"
+				if gestType == "Swipe":
 					print "SWIPED!"
-				elif gestType == "Tap"
+					words.append("-")
+				elif gestType == "Tap":
 					print "BACKSPACE!"
-				elif gestType == "Tap"
+					del words[-1]
+				elif gestType == "Tap":
 					print "ESPEAK!"
+					subprocess.call("espeak %s" % words)
 			else:
 				break
 		else:
@@ -164,6 +168,7 @@ def detectLetter(frame,prevFrame):
 		
 	if new_letter != '':
 		print new_letter
+		words.append(new_letter)
 		return new_letter 
 
 #	elif functions.is_g(frame):
