@@ -20,6 +20,7 @@ from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 #set the debug variable here, it will be global across all import
 __builtin__.debug = False
 
+'''
 def detectSwipe(frame, prevFrame):
 	counter = 1
 	for gesture in frame.gestures():
@@ -72,6 +73,37 @@ def detectTap(frame, prevFrame):
 				break
 		else:
 			break
+	return
+'''
+def detectGesture(frame, prevFrame, gestType):
+	counter = 1
+	gesture_type = ''
+	if gestType == "Swipe":
+		gesture_type = Leap.Gesture.TYPE_SWIPE
+	elif gestType == "Tap":
+		gesture_type = Leap.Gesture.TYPE_KEY_TAP
+	elif gestType == "Circle":
+		gesture_type = Leap.Gesture.TYPE_CIRCLE
+
+	for gesture in frame.gestures():
+		if gesture.type == gesture_type:
+ 			counter += 1
+			for gesture in prevFrame.gestures():
+				if gesture.type == gesture_type:
+					counter += 1
+					break
+			if counter == 2:
+				if gestType == "Swipe"
+					print "SWIPED!"
+				elif gestType == "Tap"
+					print "BACKSPACE!"
+				elif gestType == "Tap"
+					print "ESPEAK!"
+			else:
+				break
+		else:
+			break
+
 	return
 
 
@@ -236,8 +268,11 @@ class SampleListener(Leap.Listener):
 		
 		frame = controller.frame()
 		prevFrame = controller.frame(1)
-		detectSwipe(frame,prevFrame)
-		detectCircle(frame,prevFrame)
+		#detectSwipe(frame,prevFrame)
+		#detectCircle(frame,prevFrame)
+		detectGesture(frame, prevFrame, "Swipe")
+		detectGesture(frame, prevFrame, "Tap")
+		detectGesture(frame, prevFrame, "Circle")
 		detectLetter(frame,prevFrame)
 
 
