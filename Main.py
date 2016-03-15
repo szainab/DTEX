@@ -72,6 +72,7 @@ def detectTap(frame, prevFrame):
 					break
 			if counter == 2:
 				print "ESPEAK!"
+				print words
 				subprocess.call("espeak %s" % ''.join(words))
 			else:
 				break
