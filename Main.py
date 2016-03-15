@@ -21,7 +21,7 @@ from Leap import CircleGesture, KeyTapGesture, ScreenTapGesture, SwipeGesture
 __builtin__.debug = False
 __builtin__.words = []
 
-'''
+
 def detectSwipe(frame, prevFrame):
 	counter = 1
 	for gesture in frame.gestures():
@@ -62,10 +62,10 @@ def detectCircle(frame, prevFrame):
 def detectTap(frame, prevFrame):
 	counter = 1
 	for gesture in frame.gestures():
-		if gesture.type == Leap.Gesture.TYPE_KEY_TAP:
+		if gesture.type == Leap.Gesture.TYPE_SCREEN_TAP:
 			counter += 1
-			for gesture in prevFrame.gesture():
-				if gesture.type == Leap.Gesture.TYPE_KEY_TAP:
+			for gesture in prevFrame.gestures():
+				if gesture.type == Leap.Gesture.TYPE_SCREEN_TAP:
 					counter += 1
 					break
 			if counter == 2:
@@ -75,6 +75,7 @@ def detectTap(frame, prevFrame):
 		else:
 			break
 	return
+
 '''
 def detectGesture(frame, prevFrame, gestType):
 	counter = 1
@@ -111,7 +112,7 @@ def detectGesture(frame, prevFrame, gestType):
 			break
 
 	return
-
+'''
 
 def detectLetter(frame,prevFrame):
 	#timing stuff
@@ -217,9 +218,9 @@ class SampleListener(Leap.Listener):
 		print "Connected"
 		#Enable Gestures
 		controller.enable_gesture(Leap.Gesture.TYPE_SWIPE)
-		controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
-        	controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
-        	# controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
+		controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE)
+        #controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP)
+		controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP)
 
 
 	def on_frame(self, controller):
@@ -283,11 +284,12 @@ class SampleListener(Leap.Listener):
 		
 		frame = controller.frame()
 		prevFrame = controller.frame(1)
-		#detectSwipe(frame,prevFrame)
-		#detectCircle(frame,prevFrame)
-		detectGesture(frame, prevFrame, "Swipe")
-		detectGesture(frame, prevFrame, "Tap")
-		detectGesture(frame, prevFrame, "Circle")
+		detectSwipe(frame,prevFrame)
+		detectCircle(frame,prevFrame)
+		detectTap(frame,prevFrame)
+		#detectGesture(frame, prevFrame, "Swipe")
+		#detectGesture(frame, prevFrame, "Tap")
+		#detectGesture(frame, prevFrame, "Circle")
 		detectLetter(frame,prevFrame)
 
 
