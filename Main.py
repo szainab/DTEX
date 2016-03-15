@@ -33,6 +33,7 @@ def detectSwipe(frame, prevFrame):
 					break
 			if counter == 2:
 				print "SWIPED!"
+				words.append("-")
 			else:
 				break
 		else:
@@ -52,6 +53,7 @@ def detectCircle(frame, prevFrame):
 					break
 			if counter == 2:
 				print "BACKSPACE!"
+				del words[-1]
 			else:
 				break
 		else:
@@ -70,6 +72,7 @@ def detectTap(frame, prevFrame):
 					break
 			if counter == 2:
 				print "ESPEAK!"
+				subprocess.call("espeak %s" % ''.join(words))
 			else:
 				break
 		else:
