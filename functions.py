@@ -40,11 +40,13 @@ def reset(frame):
 
 	return False
 
+	
 def is_a(frame):
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
-
-	if (len(ext_fingers) == 1 and ext_fingers[0].type == 0):
+	x_palm = int(round(hand.palm_normal.x))
+	y_palm = int(round(hand.palm_normal.y))
+	if (len(ext_fingers) == 1 and ext_fingers[0].type == 0 and x_palm==0 and y_palm==0):
 		x = int(round(ext_fingers[0].direction.x))
 		y = int(round(ext_fingers[0].direction.y))
 		z = int(round(ext_fingers[0].direction.z))
@@ -274,9 +276,12 @@ def is_e(frame):
 	ext_fingers = hand.fingers.extended()
 	# get the x direction of normal vector to the palm
 	x_palm = int(round(hand.palm_normal.x))
-
+	fingers = hand.fingers
+	
+	#gets the x direction of the distal bone of thumb
+	x_thumb = int(round(fingers[0].bone(3).direction.x))
 	#none of the fingers should be extended and x direction of normal vector should be 0.
-	if(len(ext_fingers) == 0 and x_palm == 0):
+	if(len(ext_fingers) == 0 and x_palm == 0 and abs(x_thumb)==1):
 		return True 
 	else:
 		return False
