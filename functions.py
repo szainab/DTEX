@@ -271,6 +271,7 @@ def is_r(frame):
 		else:
 			return False
 
+
 def is_e(frame):
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
