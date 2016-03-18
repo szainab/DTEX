@@ -40,6 +40,30 @@ def reset(frame):
 
 	return False
 
+def is_i(frame):
+	hand = frame.hands[0]
+	ext_fingers = hand.fingers.extended()
+	if (len(ext_fingers) == 1 and ext_fingers[0].type == 4):
+		x = int(round(ext_fingers[0].direction.x))
+		y = int(round(ext_fingers[0].direction.y))
+		z = int(round(ext_fingers[0].direction.z))
+		if (abs(y) == 1 and x == 0):
+			return True
+	return False
+
+def is_v(frame):
+	hand = frame.hands[0]
+	ext_fingers = hands.fingers.extended()
+	if (len(ext_fingers) == 2 and ext_fingers[0].type == 1 and ext__fingers[1].type == 2):
+		x = int(round(ext_fingers[0].direction.x))
+		y = int(round(ext_fingers[0].direction.y))
+		z = int(round(ext_fingers[0].direction.z))
+		x1 = int(round(ext_fingers[1].direction.x))
+		y1 = int(round(ext_fingers[1].direction.y))
+		z1 = int(round(ext_fingers[1].direction.z))
+		if (abs(y) == 1 and abs(y1) == 1 and x == 0 and x1 == 0):
+			return True
+	return False
 	
 def is_a(frame):
 	hand = frame.hands[0]

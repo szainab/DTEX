@@ -196,7 +196,14 @@ def detectLetter(frame,prevFrame):
 			new_letter = "O"
 			if functions.is_o(prevFrame):
 				return new_letter
-			
+		elif functions.is_i(frame):
+			new_letter = "I"
+			if functions.is_i(prevFrame):
+				return new_letter
+		elif functions.is_v(frame):
+			new_letter = "V"
+			if functions.is_v(prevFrame):
+				return new_letter	
 		if new_letter != '':
 			print new_letter
 			words.append(new_letter)
