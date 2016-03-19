@@ -334,10 +334,11 @@ class SampleListener(Leap.Listener):
 		detectGesture(frame, prevFrame, "Swipe")
 		detectGesture(frame, prevFrame, "Tap")
 		detectGesture(frame, prevFrame, "Circle")
+		#detectLetter(frame,prevFrame)
 		
 		#only detects a letter if the speed of the hand is not more than 70. (can adjust this number)
 		#Prevents recognizing letters while moving hand to setup for the next letter
-		if (abs(hand_speed.x)<70.0 and (abs(hand_speed.y)<70.0 and abs(hand_speed.z)<70.0)):
+		if (abs(hand_speed.x)<150.0 and (abs(hand_speed.y)<150.0 and abs(hand_speed.z)<150.0)):
 			detectLetter(frame,prevFrame)
 		
 		iter+=1
