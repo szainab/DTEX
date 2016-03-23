@@ -40,7 +40,7 @@ def reset(frame):
 
 	return False
 
-def espeak(frame):
+def two_hands(frame):
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	if (len(frame.hands) == 2):

@@ -203,6 +203,10 @@ def detectLetter(frame,prevFrame):
 			new_letter = "V"
 			if functions.is_v(prevFrame):
 				return new_letter	
+		elif functions.two_hands(frame):
+			print "ESPEAK"
+			subprocess.call("espeak %s" % ''.join(words))
+			del words[:]
 		if new_letter != '':
 			print new_letter
 			words.append(new_letter)
