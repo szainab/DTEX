@@ -114,7 +114,6 @@ def detectGesture(frame, prevFrame, gestType):
 					elif gestType == "Tap":
 						print "ESPEAK!"
 						print words
-						#Join words together to form a string with
 						#empty string in between then espeak it
 						subprocess.call("espeak %s" % ''.join(words))
 						del words[:]
@@ -342,6 +341,16 @@ class SampleListener(Leap.Listener):
 			detectLetter(frame,prevFrame)
 		
 		iter+=1
+
+		count = 0
+
+		if functions.espeak(frame):
+			if len(words) == 0:
+				print "Nothing to say"
+			else: 
+				print "Espeak"
+				subprocess.call("espeak %s" % ''.join(words))
+				del words[:]
 
 def main():
 	global iter

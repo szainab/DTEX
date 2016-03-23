@@ -40,6 +40,14 @@ def reset(frame):
 
 	return False
 
+def espeak(frame):
+	hand = frame.hands[0]
+	ext_fingers = hand.fingers.extended()
+	if (len(frame.hands) == 2):
+		return True
+	return False	
+
+
 def is_i(frame):
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
@@ -75,7 +83,7 @@ def is_a(frame):
 		y = int(round(ext_fingers[0].direction.y))
 		z = int(round(ext_fingers[0].direction.z))
 
-		if (x == 0 and y == 1 and z == 0):
+		if (x == 0 and y == 1):
 			return True
 	return False
 
@@ -91,7 +99,7 @@ def is_b(frame):
 		y = [abs(int(round(ext_fingers[0].direction.y))), abs(int(round(ext_fingers[1].direction.y))), abs(int(round(ext_fingers[2].direction.y))), abs(int(round(ext_fingers[3].direction.y)))]
 		z = [int(round(ext_fingers[0].direction.z)), int(round(ext_fingers[1].direction.z)), int(round(ext_fingers[2].direction.z)), int(round(ext_fingers[3].direction.z))]
 
-		if (checkArray(x, 0) and checkArray(y, 1) and checkArray(z, 0)):
+		if (checkArray(x, 0) and checkArray(y, 1)):
 			return True #Only return True in this case, return False by default
 	return False
 
@@ -113,7 +121,7 @@ def is_d(frame):
 		y = int(round(ext_fingers[0].direction.y))
 		z = int(round(ext_fingers[0].direction.z))
 		if debug: print "D " + str(x) + ", " + str(y) + ", " + str(z)
-		if (x == 0 and abs(y) == 1 and z == 0):
+		if (x == 0 and abs(y) == 1):
 			return True #Only True in this case, returns False by default
 	return False
 
@@ -152,8 +160,7 @@ def is_l(frame):
 			print "thumb values (x y z) " + str(x_thumb) + ", " + str(y_thumb) + ", " + str(z_thumb)
 			print "index values (x y z) " + str(x_index) + ", " + str(y_index) + ", " + str(z_index)
 
-		if(abs(x_thumb) == 1 and y_thumb == 0 and z_thumb == 0
-				and x_index == 0 and abs(y_index) == 1 and z_index == 0):
+		if(abs(x_thumb) == 1 and y_thumb == 0 and x_index == 0 and abs(y_index) == 1 ):
 				return True #Only True in this case, return False by default
 	return False
 
@@ -246,8 +253,7 @@ def is_w(frame):
 			print "Middle values [x,y,z]: " + str(x3) + ", " + str(y3) + ", " + str(z3)
 	
 		#x,y,z coordinates for three extended fingers should be (0,1,0)
-		if(x1 == 0 and y1 == 1 and z1 == 0 and x2 == 0 and y2 == 1 
-			and z2 == 0 and x3 == 0 and y3 == 1 and z3 == 0):
+		if(x1 == 0 and y1 == 1 and x2 == 0 and y2 == 1 and x3 == 0 and y3 == 1):
 			return True	#only returns true in this case, returns false by default
 	return False
 
