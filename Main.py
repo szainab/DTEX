@@ -203,10 +203,10 @@ def detectLetter(frame,prevFrame):
 			new_letter = "V"
 			if functions.is_v(prevFrame):
 				return new_letter	
-		elif functions.two_hands(frame):
-			print "ESPEAK"
-			subprocess.call("espeak %s" % ''.join(words))
-			del words[:]
+		#elif functions.two_hands(frame):
+		#	print "ESPEAK"
+		#	subprocess.call("espeak %s" % ''.join(words))
+		#	del words[:]
 		if new_letter != '':
 			print new_letter
 			words.append(new_letter)
@@ -348,7 +348,7 @@ class SampleListener(Leap.Listener):
 
 		count = 0
 
-		if functions.espeak(frame):
+		if functions.two_hands(frame):
 			if len(words) == 0:
 				print "Nothing to say"
 			else: 
