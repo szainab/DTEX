@@ -1,5 +1,4 @@
 import inspect, os, sys, math, functions, time, subprocess, __builtin__
-from timeit import default_timer as timer
 
 #output file
 scriptpath = os.path.dirname(__file__)
@@ -83,20 +82,27 @@ def detectTap(frame, prevFrame):
 	return
 '''
 
-def detectGesture(frame, prevFrame, gestType):
+"""
+function detectGesture
+params:
+	frame: current frame detected by Leap
+	prevFrame: frame before the current frame
+	gesture_type: the type of gesture the Leap is expecting
+return values: N/A
+usage:
+	detect gestures performed by the hand opposite to the hand used for letters
+	the "swipe" gesture denotes the end of a word
+	the "circle" gesture indicates backspace
+	the "tap" gesture tells the program to call the eSpeak program
+"""
+def detectGesture(frame, prevFrame, gesture_type):
 	hand = frame.hands[0]
 	global hand_type
 	#should run only if the hand in current frame is opposite to the one used for letters
 	if ((hand_type == "Right" and hand.is_left==True) or (hand_type=="Left" and hand.is_right==True)):
-		counter = 1
-		gesture_type = ''
-		if gestType == "Swipe":
-			gesture_type = Leap.Gesture.TYPE_SWIPE
-		elif gestType == "Tap":
-			gesture_type = Leap.Gesture.TYPE_KEY_TAP
-		elif gestType == "Circle":
-			gesture_type = Leap.Gesture.TYPE_CIRCLE
 
+		#check if this frame's gesture and the previous frame's gesture are the same
+		counter = 1
 		for gesture in frame.gestures():
 			if gesture.type == gesture_type:
 				counter += 1
@@ -104,65 +110,57 @@ def detectGesture(frame, prevFrame, gestType):
 					if gesture.type == gesture_type:
 						counter += 1
 						break
+
+				#if the gestures are the same, do stuff
 				if counter == 2:
-					if gestType == "Swipe":
+					if gesture_type == Leap.Gesture.TYPE_SWIPE:
 						print "SWIPED!"
 						words.append("-")
-					elif gestType == "Circle":
+					elif gesture_type == Leap.Gesture.TYPE_CIRCLE:
 						print "BACKSPACE!"
 						del words[-1]
-					elif gestType == "Tap":
-						print "ESPEAK!"
+					elif gesture_type == Leap.Gesture.TYPE_KEY_TAP:
+						print "ESPEAK!"		#eSpeak will also run if both hands are detected at the same time
 						print words
 						#empty string in between then espeak it
 						subprocess.call("espeak %s" % ''.join(words))
+						#reset the words string
 						del words[:]
 				else:
 					break
 			else:
 				break
-
 		return
 
 
+"""
+function detectLetter
+params:
+	frame: current frame detected by Leap
+	prevFrame: frame before the current frame
+return values:
+	new_letter: letter that was detected by the Leap
+usage:
+	go through the list of possible letters and check which letter it is
+	return that letter
+"""
 def detectLetter(frame,prevFrame):
-	#timing stuff
-	#end_time = timer()
-	#time_taken = end_time - start_time
-	#print "End_time: " + str(end_time)
-	#print "Time_taken: " + str(time_taken)
-
-	# if debug: print "Waiting for letter"
-	#hand = frame.hands[0]
-	#ext_fingers = hand.fingers.extended()
-	
-	
-	'''
-
-	print "Length of ext_fingers " + str(len(ext_fingers))
-	print "ext_fingers types " + str([finger.type for finger in ext_fingers])
-	for finger in ext_fingers:
-		print "Finger type = " + str(finger.type) + ", direction = " + str(finger.direction.x) + "," + str(finger.direction.y) + "," + str(finger.direction.z)
-		
-
-	(inzi)
-		
-	'''
 	hand = frame.hands[0]
 	if hand.is_right:
 		new_hand_type = "Right"
 	else:
 		new_hand_type = "Left"
 		
-	#should only run if initial hand (hand_type) is the same as the hand in current frame	
+	#should only run if initial hand (hand_type) is the same as the hand in current frame
 	if hand_type == new_hand_type:
 				
 		new_letter = ''
 
+		#only return the letter if the previous frame has the same letter
 		if functions.is_l(frame):
 			new_letter = "L"
 			if functions.is_l(prevFrame):
-				return new_letter			
+				return new_letter
 		elif functions.is_d(frame):
 			new_letter = "D"
 			if functions.is_d(prevFrame):
@@ -178,7 +176,7 @@ def detectLetter(frame,prevFrame):
 		elif functions.is_b(frame):
 			new_letter = "B"
 			if functions.is_b(prevFrame):
-				return new_letter		
+				return new_letter
 		elif functions.is_r(frame):
 			new_letter = "R"
 			if functions.is_r(prevFrame):
@@ -202,47 +200,20 @@ def detectLetter(frame,prevFrame):
 		elif functions.is_v(frame):
 			new_letter = "V"
 			if functions.is_v(prevFrame):
-				return new_letter	
+				return new_letter
 		#elif functions.two_hands(frame):
 		#	print "ESPEAK"
 		#	subprocess.call("espeak %s" % ''.join(words))
 		#	del words[:]
+
+		#this code will run whenever the letter changes - could this be why some letters get doubled?
 		if new_letter != '':
 			print new_letter
 			words.append(new_letter)
-			return new_letter 
+			return new_letter
 
-#	elif functions.is_g(frame):
-#		new_letter = "G"
-#	elif functions.is_r(frame):
-#		new_letter = "R"
-#	elif functions.is_a(frame):
-#		new_letter = "A"
-#	print new_letter
-#	return new_letter
-
-
-
-	# if functions.is_l(frame) and letter != 'L': letter = "L"
-	# 	if letter != 'L': # or time_taken>7.0:
-	# 		letter = "L"
-	# elif functions.is_d(frame) and letter != "D": letter = "D"
-	# 	if letter != 'D': # or time_taken>7.0:
-	# 		letter = "D"
-	# elif functions.is_w(frame) and letter != "W": letter = "W"
-	# 	if letter != 'W': # or time_taken>7.0:
-	# 		letter = "W"
-	# elif functions.is_h(frame) and letter != "H": letter = "H"
-	# 	if letter != 'H': # or time_taken>7.0:
-	# 		letter = "H"
-	# else:
-	# 	letter = ''
-	# 	print "Unidentified Letter"
-	# print letter
-	# return letter
 
 class SampleListener(Leap.Listener):
-	
 	
 	def on_connect(self, controller):
 		print "Connected"
@@ -252,70 +223,13 @@ class SampleListener(Leap.Listener):
 		controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
 		#controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP)
 
-
 	def on_frame(self, controller):
-		
+
 		global iter
-
-		#kind of useless now
-		#start_time = timer()
-
-		#do the loop while the letter is the same or if the Leap is reset
-		# while self.letter == new_letter:
-		# 	print "in loop"
-		# 	#get the newest frame
-		#frame = controller.frame()
-		# 	print "frame id: " + str(frame.id)
-
-		#if functions.reset(frame): new_letter = ''
-		#else: new_letter = detectLetter(frame)
-
-
-		#if self.letter != new_letter:			
-		#    print new_letter
-                #    letterFile.write(new_letter) #writes letter to the file
-		#set the old letter to the new letter
-		#self.letter = new_letter
-		#wait for a bit, to "debounce"
-		
-		#time.sleep(1)    (inzi)
-		
-		# print frame.hands[0].grab_strength
-
-		#ext_fingers = frame.hands[0].fingers.extended() (inzi)
-		#print "thumb direction = " + str(ext_fingers[0].bone(3).direction.x) (inzi)
-
-
-
-		# ext_fingers = frame.hands[0].fingers.extended()
-		# print "rightmost" + str(ext_fingers.rightmost.type)
-
-		#Get the most recent frame
-		#start_time = timer() (inzi - and this line has nothing to do with recent frame) 
-
-
-		#frame = controller.frame()
-		#prevFrame = controller.frame(1)
-        
-		# print "Detecting swipe"
-		#detectSwipe(frame,prevFrame)
-
-		# start_time = timer()
-		#frame = controller.frame()
-		#prevFrame = controller.frame(1)
-        	# print "Detecting swipe"
-		#detectSwipe(frame,prevFrame)
-
-		# #if functions.reset(prevFrame):
-		# if debug: print "reset triggered"
-		# #time.sleep(5.0)
-		# self.letter = detectLetter(frame, self.letter, start_time)
-
-		#inzi code
+		global hand_type
 		frame = controller.frame()
 		prevFrame = controller.frame(1)
 		hand = frame.hands[0]
-		global hand_type
 		
 		#gets the intial hand that will be used for letters
 		if iter==1:		
@@ -325,20 +239,15 @@ class SampleListener(Leap.Listener):
 				hand_type = "Left"
 		
 		hand_speed = hand.palm_velocity
-		#print hand_speed	
-		
+
 		#detectSwipe(frame,prevFrame)
 		#detectCircle(frame,prevFrame)
 		#detectTap(frame,prevFrame)
-		
-	
-		#detectLetter(frame,prevFrame)
-		
-		detectGesture(frame, prevFrame, "Swipe")
-		detectGesture(frame, prevFrame, "Tap")
-		detectGesture(frame, prevFrame, "Circle")
-		#detectLetter(frame,prevFrame)
-		
+
+		detectGesture(frame, prevFrame, Leap.Gesture.TYPE_SWIPE)
+		detectGesture(frame, prevFrame, Leap.Gesture.TYPE_KEY_TAP)
+		detectGesture(frame, prevFrame, Leap.Gesture.TYPE_CIRCLE)
+
 		#only detects a letter if the speed of the hand is not more than 70. (can adjust this number)
 		#Prevents recognizing letters while moving hand to setup for the next letter
 		if (abs(hand_speed.x)<150.0 and (abs(hand_speed.y)<150.0 and abs(hand_speed.z)<150.0)):
@@ -346,8 +255,7 @@ class SampleListener(Leap.Listener):
 		
 		iter+=1
 
-		count = 0
-
+		#run eSpeak if both hands are detected at the same time
 		if functions.two_hands(frame):
 			if len(words) == 0:
 				print "Nothing to say"
@@ -355,6 +263,7 @@ class SampleListener(Leap.Listener):
 				print "Espeak"
 				subprocess.call("espeak %s" % ''.join(words))
 				del words[:]
+
 
 def main():
 	global iter
