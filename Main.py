@@ -138,11 +138,12 @@ function detectLetter
 params:
 	frame: current frame detected by Leap
 	prevFrame: frame before the current frame
-return values:
-	new_letter: letter that was detected by the Leap
+return values: N/A
 usage:
 	go through the list of possible letters and check which letter it is
-	return that letter
+	do the same for the previous frame
+	if both frames detect different letters, append the letter to the words array
+	otherwise, just exit (to avoid spamming a letter if the user leaves their hand out)
 """
 def detectLetter(frame,prevFrame):
 	hand = frame.hands[0]
@@ -155,8 +156,10 @@ def detectLetter(frame,prevFrame):
 	if hand_type == new_hand_type:
 				
 		new_letter = ''
+		old_letter = ''
 
-		#only return the letter if the previous frame has the same letter
+		#old code
+		"""
 		if functions.is_l(frame):
 			new_letter = "L"
 			if functions.is_l(prevFrame):
@@ -205,13 +208,42 @@ def detectLetter(frame,prevFrame):
 		#	print "ESPEAK"
 		#	subprocess.call("espeak %s" % ''.join(words))
 		#	del words[:]
+		"""
 
-		#this code will run whenever the letter changes - could this be why some letters get doubled?
-		if new_letter != '':
+		#new code
+		#find what the current frame's letter is
+		if functions.is_l(frame): new_letter = "L"
+		elif functions.is_d(frame): new_letter = "D"
+		elif functions.is_w(frame): new_letter = "W"
+		elif functions.is_h(frame): new_letter = "H"
+		elif functions.is_b(frame): new_letter = "B"
+		elif functions.is_r(frame): new_letter = "R"
+		elif functions.is_a(frame): new_letter = "A"
+		elif functions.is_e(frame):	new_letter = "E"
+		elif functions.is_o(frame):	new_letter = "O"
+		elif functions.is_i(frame):	new_letter = "I"
+		elif functions.is_v(frame):	new_letter = "V"
+
+		if functions.is_l(prevFrame): old_letter = "L"
+		elif functions.is_d(prevFrame): old_letter = "D"
+		elif functions.is_w(prevFrame): old_letter = "W"
+		elif functions.is_h(prevFrame): old_letter = "H"
+		elif functions.is_b(prevFrame): old_letter = "B"
+		elif functions.is_r(prevFrame): old_letter = "R"
+		elif functions.is_a(prevFrame): old_letter = "A"
+		elif functions.is_e(prevFrame):	old_letter = "E"
+		elif functions.is_o(prevFrame):	old_letter = "O"
+		elif functions.is_i(prevFrame):	old_letter = "I"
+		elif functions.is_v(prevFrame):	old_letter = "V"
+
+		#this code will run only if the letter changes
+		# this avoids letters being spammed if the user leaves their hand in the same position
+		# if new_letter != '':
+		if new_letter != '' and new_letter != old_letter:
 			print new_letter
 			words.append(new_letter)
-			return new_letter
-
+			# return new_letter
+	return
 
 class SampleListener(Leap.Listener):
 	
