@@ -12,17 +12,31 @@
 #Type of Intermediate = 2
 #Type of Distal = 3
 
-#The letter b requires a lot of checking the array for the same letter
-#I got bored of writing it so i made a function
+"""
+function checkArray
+params:
+	arr: the array to check
+	num: the number of elements to check for
+return values: boolean
+usage:
+	check if there is a certain number of elements in an array
+"""
 def checkArray(arr, num):
 	if all(item == num for item in arr):
 		return True
 	else:
 		return False
 
+"""
+function reset
+params:
+	frame: current frame detected by Leap
+return values: boolean
+usage:
+	return True only if all the fingers are extended and none of them is pointing upwards
+"""
 def reset(frame):
 	hand = frame.hands[0]
-
 	#list of extended fingers
 	ext_fingers = hand.fingers.extended()
 	#types of extended fingers
@@ -36,19 +50,35 @@ def reset(frame):
 			  int(round(ext_fingers[3].direction.y)),
 			  int(round(ext_fingers[4].direction.y))]
 		if checkArray(y_val, 0):
-			return True 	#only return True in this case, return False by default
-
+			return True 	#only return True in this case
+	#return False by default
 	return False
 
+
+"""
+function two_hands
+params:
+	frame: current frame detected by Leap
+return values: boolean
+usage:
+	check if the Leap detects two hands
+"""
 def two_hands(frame):
-	hand = frame.hands[0]
-	ext_fingers = hand.fingers.extended()
 	if (len(frame.hands) == 2):
 		return True
-	return False	
+	return False
 
 
+"""
+all letter functions
+params:
+	frame: current frame detected by Leap
+return values: boolean
+usage:
+	return True if the Leap detects a certain letter
+"""
 def is_i(frame):
+	#pinky finger is straight up, all other fingers are closed
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	if (len(ext_fingers) == 1 and ext_fingers[0].type == 4):
@@ -59,7 +89,10 @@ def is_i(frame):
 			return True
 	return False
 
+
 def is_v(frame):
+	#index and middle finger are straight, pointing upwards, slightly apart
+	#thumb covers the ring finger
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	if (len(ext_fingers) == 2 and ext_fingers[0].type == 1 and ext_fingers[1].type == 2):
@@ -72,8 +105,10 @@ def is_v(frame):
 		if (abs(y) == 1 and abs(y1) == 1 and x == 0 and x1 == 0):
 			return True
 	return False
-	
+
+
 def is_a(frame):
+	#fist with straight thumb pointing upwards
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	x_palm = int(round(hand.palm_normal.x))
@@ -87,7 +122,9 @@ def is_a(frame):
 			return True
 	return False
 
+
 def is_b(frame):
+	#"talk to the hand" with thumb covering palm instead of beside the other fingers
 	hand = frame.hands[0]
 	#list of extended fingers:
 	ext_fingers = hand.fingers.extended()
@@ -103,7 +140,9 @@ def is_b(frame):
 			return True #Only return True in this case, return False by default
 	return False
 
+
 def is_d(frame):
+	#index finger pointing straight up, all other fingers closed
 	hand = frame.hands[0]
 	#get a list of only the extended fingers
 	ext_fingers = hand.fingers.extended()
@@ -125,24 +164,21 @@ def is_d(frame):
 			return True #Only True in this case, returns False by default
 	return False
 
+
 def is_l(frame):
-	# debug = True
+	#literally an L shape with index and thumb
 	hand = frame.hands[0]
 	
 	#list of extended fingers
 	ext_fingers = hand.fingers.extended()
 	ext_fingers_types = [finger.type for finger in ext_fingers]
-	
 	# if debug:
-		# 	print "length of array = " + str(len(ext_fingers))
-		# 	print "types in the array = " + str([finger.type for finger in ext_fingers])
+	# 	print "length of array = " + str(len(ext_fingers))
+	# 	print "types in the array = " + str([finger.type for finger in ext_fingers])
 	# 	print "types array" + str(ext_fingers_types)
 
 	#Check length of ext_fingers and types. 
 	if len(ext_fingers) == 2 and ext_fingers_types[0] == 0 and ext_fingers_types[1] == 1 :
-		# if debug == True:
-		#     print "Inside the function"
-
 		#Set co-ordinates for thumb and finger
 		#For the thumb, get the direction for distal bones
 		x_thumb = int(round(ext_fingers[0].bone(3).direction.x))
@@ -161,22 +197,20 @@ def is_l(frame):
 			print "index values (x y z) " + str(x_index) + ", " + str(y_index) + ", " + str(z_index)
 
 		if(abs(x_thumb) == 1 and y_thumb == 0 and x_index == 0 and abs(y_index) == 1 ):
-				return True #Only True in this case, return False by default
+			return True #Only True in this case, return False by default
 	return False
 
+
 def is_h(frame):
-	# debug = True
+	#index and middle finger pointing horizontally, other fingers are closed
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	#ext_finger_types = [finger.type for finger in ext_fingers]
-	
 	# if(debug == True):
 	# 	print "Length of ext_fingers" + str(len(ext_fingers))
 	# 	print "ext_fingers types " + str([finger.type for finger in ext_fingers])
 	
 	if(len(ext_fingers) == 2 and ext_fingers[0].type == 1 and ext_fingers[1].type == 2):
-		# if debug == True:
-		# 	print "Inside the function"
 		x_index = int(round(ext_fingers[0].direction.x))
 		y_index = int(round(ext_fingers[0].direction.y))
 		z_index = int(round(ext_fingers[0].direction.z))
@@ -195,8 +229,9 @@ def is_h(frame):
 			return True #only true in this case, returns false by default
 	return False
 
+
 def is_g(frame):
-	# debug = True
+	#index finger pointing horizontally, other fingers are closed
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	#ext_finger_types = [finger.type for finger in ext_fingers]
@@ -206,8 +241,6 @@ def is_g(frame):
 	# 	print "ext_fingers types " + str([finger.type for finger in ext_fingers])
 
 	if(len(ext_fingers) == 1 and ext_fingers[0].type == 1):
-		# if debug == True:
-		# 	print "Inside the function"
 		x_index = int(round(ext_fingers[0].direction.x))
 		y_index = int(round(ext_fingers[0].direction.y))
 		z_index = int(round(ext_fingers[0].direction.z))
@@ -222,8 +255,10 @@ def is_g(frame):
 			return True #only true in this case, returns false by default
 	return False
 
+
 def is_w(frame):
-		# debug = True
+	#index, middle and ring fingers straight, slightly apart, pointing upwards
+	#thumb connects with closed pinky finger
 	hand = frame.hands[0]
 	
 	#get a list of only the extended fingers
@@ -259,7 +294,7 @@ def is_w(frame):
 
 
 def is_r(frame):
-		# debug = True
+	#index and middle finger straight and crossed over each other, other fingers are closed
 	hand = frame.hands[0]
 	
 	#get a list of only the extended fingers
@@ -303,6 +338,7 @@ def is_r(frame):
 
 
 def is_e(frame):
+	#all fingers closed in a loose fist, with tips of fingers all touching the thumb
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	# get the x direction of normal vector to the palm
@@ -319,6 +355,7 @@ def is_e(frame):
 
 
 def is_o(frame):
+	#an O sign with the hand
 	hand = frame.hands[0]
 	ext_fingers = hand.fingers.extended()
 	# get the x direction of normal vector to the palm
