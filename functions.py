@@ -94,8 +94,8 @@ def is_i(frame):
 		x = int(round(ext_fingers[0].direction.x))
 		y = int(round(ext_fingers[0].direction.y))
 		z = int(round(ext_fingers[0].direction.z))
-	if abs(y) == 1 and x == 0:
-		return True
+		if abs(y) == 1 and x == 0:
+			return True
 	return False
 
 

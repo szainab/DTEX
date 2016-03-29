@@ -118,7 +118,8 @@ def detectGesture(frame, prevFrame, gesture_type):
 						words.append("-")
 					elif gesture_type == Leap.Gesture.TYPE_CIRCLE:
 						print "BACKSPACE!"
-						del words[-1]
+						if len(words) > 0:
+							del words[-1]
 					elif gesture_type == Leap.Gesture.TYPE_KEY_TAP:
 						print "ESPEAK!"		#eSpeak will also run if both hands are detected at the same time
 						print words
@@ -289,9 +290,10 @@ class SampleListener(Leap.Listener):
 
 		#run eSpeak if both hands are detected at the same time
 		if functions.two_hands(frame):
-			if len(words) == 0:
-				print "Nothing to say"
-			else: 
+			# if len(words) == 0:
+			# 	print "Nothing to say"
+			# else:
+			if len(words) > 0:
 				print "Espeak"
 				subprocess.call("espeak %s" % ''.join(words))
 				del words[:]
