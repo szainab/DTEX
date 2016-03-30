@@ -120,13 +120,13 @@ def detectGesture(frame, prevFrame, gesture_type):
 						print "BACKSPACE!"
 						if len(words) > 0:
 							del words[-1]
-					elif gesture_type == Leap.Gesture.TYPE_KEY_TAP:
-						print "ESPEAK!"		#eSpeak will also run if both hands are detected at the same time
-						print words
-						#empty string in between then espeak it
-						subprocess.call("espeak %s" % ''.join(words))
-						#reset the words string
-						del words[:]
+					# elif gesture_type == Leap.Gesture.TYPE_KEY_TAP:
+					# 	print "ESPEAK!"		#eSpeak will also run if both hands are detected at the same time
+					# 	print words
+					# 	#empty string in between then espeak it
+					# 	subprocess.call("espeak %s" % ''.join(words))
+					# 	#reset the words string
+					# 	del words[:]
 				else:
 					break
 			else:
@@ -246,6 +246,23 @@ def detectLetter(frame,prevFrame):
 			# return new_letter
 	return
 
+
+"""
+function detectLetter
+params:
+	frame: current frame detected by Leap
+	prevFrame: frame before the current frame
+return values: N/A
+usage:
+	if the reset gesture is detected, put an underscore in the words array
+	this underscore will be removed when eSpeak is called
+"""
+def detectReset(frame, prevFrame):
+	if functions.reset(frame):
+		if functions.reset(prevFrame):
+			words.append("_")
+	return
+
 class SampleListener(Leap.Listener):
 	
 	def on_connect(self, controller):
@@ -253,7 +270,7 @@ class SampleListener(Leap.Listener):
 		#Enable Gestures
 		controller.enable_gesture(Leap.Gesture.TYPE_SWIPE)
 		controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE)
-		controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
+		controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP)
 		#controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP)
 
 	def on_frame(self, controller):
@@ -278,8 +295,9 @@ class SampleListener(Leap.Listener):
 		#detectTap(frame,prevFrame)
 
 		detectGesture(frame, prevFrame, Leap.Gesture.TYPE_SWIPE)
-		detectGesture(frame, prevFrame, Leap.Gesture.TYPE_KEY_TAP)
 		detectGesture(frame, prevFrame, Leap.Gesture.TYPE_CIRCLE)
+		#this line is useless because eSpeak is handled by the two_hands function
+		# detectGesture(frame, prevFrame, Leap.Gesture.TYPE_KEY_TAP)
 
 		#only detects a letter if the speed of the hand is not more than 70. (can adjust this number)
 		#Prevents recognizing letters while moving hand to setup for the next letter

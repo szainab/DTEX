@@ -19,7 +19,7 @@ params:
 	num: the number of elements to check for
 return values: boolean
 usage:
-	check if there is a certain number of elements in an array
+	check if all elements in an array are equal to num
 """
 
 
