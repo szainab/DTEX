@@ -1,3 +1,5 @@
+import math
+
 # Fingers:
 # Type of thumb = 0
 # Type of index = 1
@@ -111,8 +113,40 @@ def is_v(frame):
 		x1 = int(round(ext_fingers[1].direction.x))
 		y1 = int(round(ext_fingers[1].direction.y))
 		z1 = int(round(ext_fingers[1].direction.z))
+
 		if abs(y) == 1 and abs(y1) == 1 and x == 0 and x1 == 0:
-			return True
+			#old code
+
+			# if hand.is_right:
+			# 	if ext_fingers.rightmost.type == 2:
+			# 		return True
+			# 	else:
+			# 		return False
+            #
+			# # if left hand, finger with smallest x co-ordinate should be index finger
+			# elif hand.is_left:
+			# 	if ext_fingers.leftmost.type == 2:
+			# 		return True
+			# 	else:
+			# 		return False
+			# # return True
+
+			#new code:
+			#get the position of the third joint on the index and middle fingers
+			#find the distance between them
+			#if the distance is small, then it's an R
+			#otherwise, it's a V
+			index_intermediate_joint = ext_fingers[0].bone(2).next_joint
+			middle_intermediate_joint = ext_fingers[1].bone(2).next_joint
+			dist_vector = middle_intermediate_joint - index_intermediate_joint
+			dist = math.sqrt(dist_vector.x ** 2 + dist_vector.y ** 2 + dist_vector.z ** 2)
+			# print "index joint vector = " + "(" + str(index_intermediate_joint.x) + ", " + str(index_intermediate_joint.y) + ", " + str(index_intermediate_joint.z) + ")"
+			# print "middle joint vector = " + "(" + str(middle_intermediate_joint.x) + ", " + str(middle_intermediate_joint.y) + ", " + str(middle_intermediate_joint.z) + ")"
+            #
+			# print "dist in mm = " + str(dist)
+
+			if dist > 20:
+				return True
 	return False
 
 
@@ -320,12 +354,12 @@ def is_r(frame):
 	# if there are three extended fingers and the fingers types are index, middle and ring
 	if (len(ext_fingers) == 2 and (ext_fingers_types[0] == 1) and (ext_fingers_types[1] == 2)):
 		# x,y,z values for first extended finger
-		# x1 = int(ext_fingers[0].direction.x))
+		x1 = int(ext_fingers[0].direction.x)
 		y1 = int(round(ext_fingers[0].direction.y))
 		z1 = int(round(ext_fingers[0].direction.z))
 
 		# x,y,z values for second extended finger
-		# x2 = int(ext_fingers[1].direction.x))
+		x2 = int(ext_fingers[1].direction.x)
 		y2 = int(round(ext_fingers[1].direction.y))
 		z2 = int(round(ext_fingers[1].direction.z))
 
@@ -335,21 +369,33 @@ def is_r(frame):
 
 		# y and z coordinates for both extended fingers should be 1 and 0 respectively.
 		if y1 == 1 and z1 == 0 and y2 == 1 and z2 == 0:
-			# if right hand, finger with largest x co-ordinate should be index finger
-			if hand.is_right:
-				if ext_fingers.rightmost.type == 0 or ext_fingers.rightmost.type == 1:
-					return True
-				else:
-					return False
+			# # if right hand, finger with largest x co-ordinate should be index finger
+			# if hand.is_right:
+			# 	# if ext_fingers.rightmost.type == 0 or ext_fingers.rightmost.type == 1:
+			# 	# 	return True
+			# 	# else:
+			# 	# 	return False
+            #
+			# # if left hand, finger with smallest x co-ordinate should be index finger
+			# elif hand.is_left:
+			# 	if ext_fingers.leftmost.type == 0 or ext_fingers.leftmost.type == 1:
+			# 		return True
+			# 	else:
+			# 		return False
 
-			# if left hand, finger with smallest x co-ordinate should be index finger
-			elif hand.is_left:
-				if ext_fingers.leftmost.type == 0 or ext_fingers.leftmost.type == 1:
-					return True
-				else:
-					return False
-		else:
-			return False
+			#see is_v function for explanation
+			index_intermediate_joint = ext_fingers[0].bone(2).next_joint
+			middle_intermediate_joint = ext_fingers[1].bone(2).next_joint
+			dist_vector = middle_intermediate_joint - index_intermediate_joint
+			dist = math.sqrt(dist_vector.x ** 2 + dist_vector.y ** 2 + dist_vector.z ** 2)
+			# print "index joint vector = " + "(" + str(index_intermediate_joint.x) + ", " + str(index_intermediate_joint.y) + ", " + str(index_intermediate_joint.z) + ")"
+			# print "middle joint vector = " + "(" + str(middle_intermediate_joint.x) + ", " + str(middle_intermediate_joint.y) + ", " + str(middle_intermediate_joint.z) + ")"
+
+			# print "dist in mm = " + str(dist)
+
+			if dist < 20:
+				return True
+	return False
 
 
 def is_e(frame):
