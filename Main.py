@@ -113,13 +113,21 @@ def detectGesture(frame, prevFrame, gesture_type):
 
 				#if the gestures are the same, do stuff
 				if counter == 2:
-					if gesture_type == Leap.Gesture.TYPE_SWIPE:
+					if gesture_type == Leap.Gesture.TYPE_CIRCLE:
+						if len(words) > 0:
+							print "BACKSPACE!"
+							if words[len(words) - 1] == "_":
+								#if the last character in the array is an underscore,
+								#delete the underscore and the letter before it as well
+								del words[-1]
+							#otherwise, just delete the letter
+							del words[-1]
+							print ''.join(filter(lambda a: a != "_", words))
+					elif gesture_type == Leap.Gesture.TYPE_SWIPE:
 						print "SWIPED!"
 						words.append("-")
-					elif gesture_type == Leap.Gesture.TYPE_CIRCLE:
-						print "BACKSPACE!"
-						if len(words) > 0:
-							del words[-1]
+						print ''.join(filter(lambda a: a != "_", words))
+
 					# elif gesture_type == Leap.Gesture.TYPE_KEY_TAP:
 					# 	print "ESPEAK!"		#eSpeak will also run if both hands are detected at the same time
 					# 	print words
@@ -243,7 +251,7 @@ def detectLetter(frame,prevFrame):
 		if new_letter != '' and new_letter != old_letter:
 			print new_letter
 			words.append(new_letter)
-			# return new_letter
+			print ''.join(filter(lambda a: a != "_", words))
 	return
 
 
@@ -277,6 +285,7 @@ class SampleListener(Leap.Listener):
 
 		global iter
 		global hand_type
+		global words
 		frame = controller.frame()
 		prevFrame = controller.frame(1)
 		hand = frame.hands[0]
@@ -301,8 +310,11 @@ class SampleListener(Leap.Listener):
 
 		#only detects a letter if the speed of the hand is not more than 70. (can adjust this number)
 		#Prevents recognizing letters while moving hand to setup for the next letter
-		if (abs(hand_speed.x)<150.0 and (abs(hand_speed.y)<150.0 and abs(hand_speed.z)<150.0)):
-			detectLetter(frame,prevFrame)
+		if len(words) == 0 or words[len(words) - 1] == "_":
+			if (abs(hand_speed.x)<150.0 and (abs(hand_speed.y)<150.0 and abs(hand_speed.z)<150.0)):
+				detectLetter(frame,prevFrame)
+		else:
+			detectReset(frame,prevFrame)
 		
 		iter+=1
 
@@ -313,6 +325,9 @@ class SampleListener(Leap.Listener):
 			# else:
 			if len(words) > 0:
 				print "Espeak"
+				#filter out all the underscores from the words array
+				words = filter(lambda a: a != "_", words)
+				print ''.join(words)
 				subprocess.call("espeak %s" % ''.join(words))
 				del words[:]
 
@@ -320,6 +335,8 @@ class SampleListener(Leap.Listener):
 def main():
 	global iter
 	iter = 1	#this global variable is used to set the hand_type only once in 'on_frame' function
+	global words
+	words = []
 
 	listener = SampleListener()
 	controller = Leap.Controller()
